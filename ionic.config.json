@@ -1,5 +1,7 @@
 {
   "name": "gamescore",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
