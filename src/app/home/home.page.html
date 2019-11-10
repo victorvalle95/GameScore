@@ -5,6 +5,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-item>
+    <app-login></app-login>
+  </ion-item>
+
   <div padding *ngIf="show">
     <!--Comprobamos si la variable show esta en true, si es asi se muestran los campos-->
     <ion-item>
@@ -25,7 +29,7 @@
   <ion-list>
     <button ion-item *ngFor="let fruit of fruits" (click)="selectFruit(fruit.id)">
       <!--Recorremos el array fruits que hemos cargado en el constructor home.ts-->
-      Nombre: {{ fruit.name }} | Unidades: {{fruit.quantity}}
+      Nombre: {{ fruit.first_name}}
       <!--Mostramos el nombre y la cantidad-->
     </button>
   </ion-list>

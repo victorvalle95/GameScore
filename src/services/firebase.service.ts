@@ -13,7 +13,7 @@ export class FirebaseService {
   }
 
   public getUsuarios() {
-    return this.afDB.list('usuarios/').valueChanges();
+    return this.afDB.list('user/').valueChanges();
     //Esta función devolverá todos los datos que tengamos en el apartado usuarios, en nuestra base de datos
   }
   public saveUsuario(usuario) {

@@ -13,6 +13,7 @@ import {FirebaseService} from '../services/firebase.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { LoginPage } from './login/login.page';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAMyYhpHUv9iNfQvH6Ki39jKa4hy1q4sdg",
@@ -25,7 +26,10 @@ const firebaseConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,   
+    LoginPage
+  ],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -33,7 +37,7 @@ const firebaseConfig = {
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
   ],
   providers: [
     StatusBar,
