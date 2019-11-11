@@ -1,9 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title text-center>GameScore </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item text-center lines=none>
+      <ion-label>GameScore image</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Usuario</ion-label>
+      <ion-input clearInput name="email" id="email"  #email></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Contraseña</ion-label>
+      <ion-input clearInput name="pass" id="pass" #pass></ion-input>
+    </ion-item>
+    <ion-item lines=none text-center>
+      <ion-button style="float:left; margin: 0 auto"  shape="round" fill="outline">Recuperar contraseña</ion-button>
+      <ion-button style="float:left; margin: 0 auto"  shape="round" fill="outline" (click)="login(email,pass)">Entrar</ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -13,7 +13,7 @@ import {FirebaseService} from '../services/firebase.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { LoginPage } from './login/login.page';
+import { FormsModule } from '@angular/forms';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAMyYhpHUv9iNfQvH6Ki39jKa4hy1q4sdg",
@@ -27,8 +27,7 @@ const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent,   
-    LoginPage
+    AppComponent
   ],
   entryComponents: [],
   imports: [
@@ -38,6 +37,7 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    FormsModule
   ],
   providers: [
     StatusBar,
@@ -45,6 +45,7 @@ const firebaseConfig = {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FirebaseService,
     AngularFireDatabase,
+    FormsModule
   ],
   bootstrap: [AppComponent]
 })

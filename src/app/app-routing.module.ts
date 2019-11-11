@@ -5,7 +5,7 @@ import { LoginPage } from './login/login.page';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path:'login',
-    component:  LoginPage
+    loadChildren:  './login/login.module#LoginPageModule'
   }
 ];
 

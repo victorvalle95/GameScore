@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  loginCorrecto:boolean;
+  constructor(public authService: AuthFirebaseService) { }
 
   ngOnInit() {
+    this.loginCorrecto = false;
+  }
+
+  login(email,pass){
+    this.authService.signInWithEmail(email,pass);
   }
 
 }
