@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
+import { FirebaseService } from 'src/services/firebase.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -8,15 +10,74 @@ import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 })
 export class LoginPage implements OnInit {
 
-  loginCorrecto:boolean;
-  constructor(public authService: AuthFirebaseService) { }
+  loginCorrecto: boolean;
+  errorMessage: string;
+  successMessage: string;
+  users = [];
+  userLoged;
+
+  constructor(public authService: AuthFirebaseService, public firebaseService: FirebaseService, public alertController: AlertController) {
+    firebaseService.getUsuarios()
+      .subscribe(data => {
+        this.users = data;
+      });
+  }
 
   ngOnInit() {
     this.loginCorrecto = false;
   }
 
-  login(email,pass){
-    this.authService.signInWithEmail(email,pass);
+  login(email, pass) {
+    this.authService.signInWithEmail(email.value, pass.value).then(
+      res => {
+        console.log(res);
+        this.errorMessage = "";
+        this.successMessage = "Your account has been created";
+        for (let user of this.users) {
+          if (user.email == email) {
+            this.userLoged = user;
+          }
+        }
+      }, err => {
+        console.log(err);
+        this.errorMessage = err.message;
+        this.successMessage = "";
+      });
+  }
+
+  async presentAlertPrompt() {
+    const alert = await this.alertController.create({
+      header: 'Prompt!',
+      inputs: [
+        {
+          name: 'emailRecover',
+          type: 'text',
+          placeholder: 'Email'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            console.log('Confirm Ok');
+            this.authService.recoveryPassword(data.emailRecover);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  googleAuth(){
+    this.authService.googleAuth();
   }
 
 }

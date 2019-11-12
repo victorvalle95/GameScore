@@ -11,15 +11,32 @@
     </ion-item>
     <ion-item>
       <ion-label>Usuario</ion-label>
-      <ion-input clearInput name="email" id="email"  #email></ion-input>
+      <ion-input clearInput name="email" id="email" #email></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Contraseña</ion-label>
-      <ion-input clearInput name="pass" id="pass" #pass></ion-input>
+      <ion-input type="password" clearInput name="pass" id="pass" #pass></ion-input>
     </ion-item>
     <ion-item lines=none text-center>
-      <ion-button style="float:left; margin: 0 auto"  shape="round" fill="outline">Recuperar contraseña</ion-button>
-      <ion-button style="float:left; margin: 0 auto"  shape="round" fill="outline" (click)="login(email,pass)">Entrar</ion-button>
+      <ion-button style="float:left; margin: 0 auto" shape="round" fill="outline" (click)="presentAlertPrompt()">
+        Recuperar contraseña</ion-button>
+      <ion-button style="float:left; margin: 0 auto" shape="round" fill="outline" (click)="login(email,pass)">Entrar
+      </ion-button>
+      <ion-button style="float:left; margin: 0 auto" (click)="googleAuth()">
+        <ion-icon name="logo-googleplus"></ion-icon>
+      </ion-button>
+
     </ion-item>
+
   </ion-list>
 </ion-content>
+<ion-footer no-border>
+  <ion-toolbar lines=none>
+    <ion-card color="primary" text-center>
+      <ion-card-title>¿Aún no tienes usuario? Registrate pulsando aquí</ion-card-title>
+    </ion-card>
+    <ion-card color="danger" text-center>
+      <ion-card-title>Acceso de invitados</ion-card-title>
+    </ion-card>
+  </ion-toolbar>
+</ion-footer>

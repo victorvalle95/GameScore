@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { auth } from 'firebase/app';
+
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
@@ -29,5 +31,25 @@ export class AuthFirebaseService {
   // Ingreso con email
   signInWithEmail(email, pass): Promise<firebase.auth.UserCredential> {
     return this.afAuth.auth.signInWithEmailAndPassword(email, pass)
+  }
+
+  recoveryPassword(email) {
+    return this.afAuth.auth.sendPasswordResetEmail(email).then(function () {
+      // Email sent.
+    }).catch(function (error) {
+      // An error happened.
+    });
+  }
+
+  googleAuth() {
+    return this.authLogin(new auth.GoogleAuthProvider());
+  }  
+  authLogin(provider) {
+    return this.afAuth.auth.signInWithPopup(provider)
+    .then((result) => {
+        console.log('You have been successfully logged in!')
+    }).catch((error) => {
+        console.log(error)
+    })
   }
 }
