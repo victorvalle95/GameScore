@@ -36,5 +36,4 @@ export class FirebaseService {
     this.afDB.database.ref('usuarios/' + id).remove();
     //Borrará el usuario con el id que le pasamos por parametro
   }
-
 }
