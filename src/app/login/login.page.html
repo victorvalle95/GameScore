@@ -14,7 +14,7 @@
       <ion-input clearInput name="email" id="email" #email></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Contraseña</ion-label>
+      <ion-label>{{'LOGIN.PASS' | translate}}</ion-label>
       <ion-input type="password" clearInput name="pass" id="pass" #pass></ion-input>
     </ion-item>
     <ion-item lines=none text-center>
@@ -28,7 +28,7 @@
 
     </ion-item>
 
-    <ion-card color="primary" text-center>
+    <ion-card color="primary" text-center [routerLink]="['/register']">
       <ion-card-title>¿Aún no tienes usuario? Registrate pulsando aquí</ion-card-title>
     </ion-card>
 

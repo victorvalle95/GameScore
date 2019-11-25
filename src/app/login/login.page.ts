@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 import { FirebaseService } from 'src/services/firebase.service';
 import { AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +15,10 @@ export class LoginPage implements OnInit {
   successMessage: string;
   users = [];
   userLoged;
-  activeLang = 'es';
 
 
   constructor(
     public authService: AuthFirebaseService,
-    private translate: TranslateService,
     public firebaseService: FirebaseService,
     public alertController: AlertController) 
   {
@@ -29,7 +26,6 @@ export class LoginPage implements OnInit {
       .subscribe(data => {
         this.users = data;
       });
-    this.translate.setDefaultLang(this.activeLang);
   }
 
   ngOnInit() {
