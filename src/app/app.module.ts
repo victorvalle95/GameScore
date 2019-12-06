@@ -28,6 +28,7 @@ const firebaseConfig = {
   appId: "1:260409849548:web:1c3f49ffeecb7c21"
 };
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -58,7 +59,7 @@ const firebaseConfig = {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FirebaseService,
     AngularFireDatabase,
-    FormsModule
+    FormsModule,
   ],
   bootstrap: [AppComponent]
 })

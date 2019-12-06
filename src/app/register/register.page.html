@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>register</ion-title>
+    <ion-title>{{'REGISTER.REGISTER' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="registerForm" (ngSubmit)="register()">
+  <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
     <ion-item>
-      <ion-label>{{'First name' | translate}}</ion-label>
+      <ion-label>{{'REGISTER.FIRST_NAME' | translate}}</ion-label>
       <ion-input type="text" formControlName="firstName"></ion-input>
     </ion-item>
     <ion-item>

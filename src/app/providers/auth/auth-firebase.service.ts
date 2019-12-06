@@ -52,4 +52,13 @@ export class AuthFirebaseService {
         console.log(error)
     })
   }
+
+  doRegister(value){
+    return new Promise<any>((resolve, reject) => {
+      this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password)
+      .then(res => {
+        resolve(res);
+      }, err => reject(err))
+    })
+  }
 }
