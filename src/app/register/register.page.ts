@@ -4,6 +4,7 @@ import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { FirebaseService } from 'src/services/firebase.service';
 
 @Component({
   selector: 'app-register',
@@ -21,10 +22,11 @@ export class RegisterPage implements OnInit {
     public authService: AuthFirebaseService,
     public alertController: AlertController,
     public translate: TranslateService,
+    public firebase: FirebaseService,
     public router: Router) {
     this.registerForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      first_Name: ['', Validators.required],
+      last_Name: ['', Validators.required],
       email: ['', Validators.required],
       mediaCompany: [''],
       phone: ['', Validators.required],
@@ -43,6 +45,7 @@ export class RegisterPage implements OnInit {
         this.errorMessage = "";
         this.successMessage = "Your account has been created";
         this.presentAlert(this.successMessage,true);
+        this.firebase.saveUsuario(value);
       }, err => {
         console.log(err);
         this.errorMessage = err.message;

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs-compat';
+import { User } from 'src/app/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +17,8 @@ export class FirebaseService {
     return this.afDB.list('user/').valueChanges();
     //Esta función devolverá todos los datos que tengamos en el apartado usuarios, en nuestra base de datos
   }
-  public saveUsuario(usuario) {
-    let key = this.afDB.list('/usuarios/').push(usuario).key;
-    //Guardamos el usuario y obtenemos el id que firebase pone al nudulo de nuestro usuario.
-    //Al guardarse sin id nuestro usuario, ahora la actualizamos con el id que firebase nos devuelve.
-    usuario.id = key;
-    this.afDB.database.ref('usuarios/' + usuario.id).set(usuario);
-
+  public saveUsuario(user:User) {
+    this.afDB.database.ref('usuarios/' + user.id).set(user);
   }
   public updateUsuario(usuario) {
     //Actualizamos la fruta con el id que recibimos del objeto del parametro

@@ -1,7 +1,7 @@
 {
     "LOGIN": {
         "USER":"Usuario",
-        "PASSWORD":"Contraseña"
+        "PASS":"Contraseña"
     },
     "REGISTER":     {
         "FIRST_NAME": "Nombre",
