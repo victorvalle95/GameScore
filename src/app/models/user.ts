@@ -1,10 +1,11 @@
 export class User{
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     image: string;
     username: string;
     password: string;
     email: string;
-    idMedia: boolean;
-    imagen: string;
+    id_press: boolean;
+    id: string;
+    tlf: string;
 }

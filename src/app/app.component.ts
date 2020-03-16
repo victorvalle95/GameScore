@@ -17,6 +17,7 @@ export class AppComponent {
       url: '/login'
     },
     {
+      icon: 'home',
       title: 'Register',
       url: '/register'
     }

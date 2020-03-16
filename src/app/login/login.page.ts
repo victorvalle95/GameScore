@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
       });
   }
 
-  async presentAlertPrompt() {
+  async recuperarEmailAlert() {
     const alert = await this.alertController.create({
       header: 'Prompt!',
       inputs: [

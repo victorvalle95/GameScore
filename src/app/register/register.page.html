@@ -10,33 +10,38 @@
 <ion-content>
   <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
     <ion-item>
-      <ion-label>{{'REGISTER.FIRST_NAME' | translate}}</ion-label>
-      <ion-input type="text" formControlName="firstName"></ion-input>
+      <ion-label>{{'REGISTER.FIRST_NAME' | translate}}*</ion-label>
+      <ion-input type="text" formControlName="first_name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Last name</ion-label>
-      <ion-input type="text" formControlName="lastName"></ion-input>
+      <ion-label>Last name*</ion-label>
+      <ion-input type="text" formControlName="last_name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Email</ion-label>
+      <ion-label>Email*</ion-label>
       <ion-input type="email" formControlName="email"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Media company (optional)</ion-label>
-      <ion-input type="text" formControlName="mediaCompany"></ion-input>
+      <ion-label style="color: black !important">Media Co.</ion-label>
+      <ion-input type="text" disabled formControlName="media_company"></ion-input>
+      <ion-button>
+        <ion-icon slot="icon-only" name="ios-search" ></ion-icon>
+      </ion-button>
     </ion-item>
     <ion-item>
-      <ion-label>Phone</ion-label>
-      <ion-input type="text" formControlName="phone"></ion-input>
+      <ion-label>Phone*</ion-label>
+      <ion-input type="text" formControlName="tlf"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Username</ion-label>
+      <ion-label>Username*</ion-label>
       <ion-input type="text" formControlName="username"></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label>Password</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
+      <ion-label>Password*</ion-label>
+      <ion-input type="password" id="password" name="password" formControlName="password"></ion-input>
     </ion-item>
+
     <!--
     <ion-item>
       <ion-label>Image</ion-label>
