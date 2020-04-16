@@ -1,9 +1,12 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar >
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{'REGISTER.REGISTER' | translate}}</ion-title>
+    <ion-title class="titulo" text-center>GameScore</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-title text-center>{{'REGISTER.REGISTER' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -23,8 +26,8 @@
     </ion-item>
     <ion-item>
       <ion-label style="color: black !important">Media Co.</ion-label>
-      <ion-input type="text" disabled formControlName="media_company"></ion-input>
-      <ion-button>
+      <ion-input type="text" (change)="changeControlMedia()" formControlName="media_company"></ion-input>
+      <ion-button (click)="mediaExists()">
         <ion-icon slot="icon-only" name="ios-search" ></ion-icon>
       </ion-button>
     </ion-item>
@@ -48,6 +51,6 @@
       <ion-input (change)="uploadImage($event)" type="file" class="image-upload" accept="image/*">
     </ion-item>
     -->
-    <ion-button type="submit" color="primary" expand="block" [disabled]="!registerForm.valid">Submit</ion-button>
+    <ion-button type="submit" color="primary" expand="block" [disabled]="!registerForm.valid || !controlarMedia()">Submit</ion-button>
   </form>
 </ion-content>

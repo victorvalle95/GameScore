@@ -4,6 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
   <ion-list>
     <ion-item lines=none>
@@ -17,7 +18,7 @@
       <ion-label>{{'LOGIN.PASS' | translate}}</ion-label>
       <ion-input type="password" clearInput name="pass" id="pass" #pass></ion-input>
     </ion-item>
-    <ion-item lines=none text-center>
+    <ion-item lines="none" text-center>
       <ion-button style="float:left; margin: 0 auto" shape="round" fill="outline" (click)="recuperarEmailAlert()">
         Recuperar contraseña</ion-button>
       <ion-button style="float:left; margin: 0 auto" shape="round" fill="outline" (click)="login(email,pass)">Entrar

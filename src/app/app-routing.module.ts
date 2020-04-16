@@ -18,7 +18,10 @@ const routes: Routes = [
   { 
     path: 'register', 
     loadChildren: './register/register.module#RegisterPageModule' 
-  }
+  },
+  { path: 'main-page', loadChildren: './main-page/main-page.module#MainPagePageModule' }
+
+
 ];
 
 @NgModule({

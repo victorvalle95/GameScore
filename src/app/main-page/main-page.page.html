@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo" text-center>GameScore</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment scrollable value="heart">
+      <ion-segment-button value="home">
+        Estrenos
+      </ion-segment-button>
+      <ion-segment-button value="heart">
+        Proximamente
+      </ion-segment-button>
+      <ion-segment-button value="pin">
+        Top 2020
+      </ion-segment-button>
+      <ion-segment-button value="star">
+        Todos
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h3>Lanzamientos recientes</h3>
+
+  <ion-slides pager="true" [options]="slideshowImages" #slideWithNav2>
+    <ion-slide *ngFor="let s of slideshowImages">
+      <img src="{{s}}">
+    </ion-slide>
+  </ion-slides>
+
+  <h3>Salon de la fama {{fechaActual.getFullYear()}}</h3>
+  <ion-slides pager="true" [options]="slideshowImages2" #slideWithNav2>
+    <ion-slide *ngFor="let s of slideshowImages2">
+      <img src="{{s}}">
+    </ion-slide>
+  </ion-slides>
+
+
+  <!--
+  <ion-list>
+      <ion-item color="{{color(game)}}" *ngFor="let game of actualGames">{{ game.name }} - {{game.releaseDateText}}</ion-item>
+  </ion-list>
+  -->
+</ion-content>

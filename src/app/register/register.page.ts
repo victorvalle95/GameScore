@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/services/firebase.service';
@@ -20,6 +20,7 @@ export class RegisterPage implements OnInit {
   actualUser: User;
   users: User[];
   medias: Media[];
+  controlMedia: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,6 +28,7 @@ export class RegisterPage implements OnInit {
     public alertController: AlertController,
     public translate: TranslateService,
     public firebase: FirebaseService,
+    public toastController: ToastController,
     public router: Router) {
     this.registerForm = this.formBuilder.group({
       first_name: ['', Validators.required],
@@ -44,58 +46,55 @@ export class RegisterPage implements OnInit {
       (data: User[]) => {
         this.users = data;
       });
+
   }
 
   mediaExists(value) {
+    console.log(this.registerForm.controls['media_company'].value);
     this.firebase.getMedia().subscribe(
       (data: Media[]) => {
         this.medias = data;
+        this.controlMedia = false;
         this.medias.forEach(
           (media) => {
-            if (media.name == this.registerForm.controls['media_company'].value) {
-              if (this.registerForm.controls['media_company'].value == '') {
-                this.authService.doRegister(value)
-                  .then(res => {
-                    console.log(res);
-                    this.errorMessage = "";
-                    this.successMessage = "Your account has been created";
-                    this.presentAlert(this.successMessage, true);
-                  }, err => {
-                    console.log(err);
-                    this.errorMessage = err.message;
-                    this.successMessage = "";
-                    this.presentAlert(this.errorMessage, false);
-                  })
-              }
-              else {
-                this.errorMessage = "Media no existe";
+            if (this.controlMedia === false) {
+              if (media.name == this.registerForm.controls['media_company'].value) {
+                this.errorMessage = "Media existe";
                 this.successMessage = "";
-                this.presentAlert(this.errorMessage, false);
+                this.controlMedia = true;
+                this.presentToast(this.errorMessage);
               }
             }
           }
-        )
+        );
+
+        if (this.controlMedia === false) {
+          this.errorMessage = "Media no existe";
+          this.successMessage = "";
+          this.presentToast(this.errorMessage);
+        }
       }
     )
   }
 
   register(value) {
     this.actualUser = value;
-    this.mediaExists(value);
+    this.presentAlert();
   }
 
-  async presentAlert(message, control) {
+  async presentAlert() {
     const alert = await this.alertController.create({
       header: this.translate.instant("REGISTER.REGISTER"),
       subHeader: "",
-      message: message,
+      message: "Correcto",
       buttons: [
         {
           text: 'OK',
           handler: (data) => {
-            if (control === true)
-              this.router.navigate(['/login']);
+            this.router.navigate(['/login']);
             this.firebase.saveUsuario(this.actualUser, this.users.length);
+            this.registerForm.reset();
+
           }
         }
       ]
@@ -103,4 +102,30 @@ export class RegisterPage implements OnInit {
 
     await alert.present();
   }
+
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  controlarMedia() {
+    if (this.controlMedia == true) {
+      return true;
+    } else {
+      if (this.registerForm.controls['media_company'].value == '') {
+        return true
+      }
+      else {
+        return false;
+      }
+    }
+  }
+
+  changeControlMedia(){
+    this.controlMedia = false;
+  }
+
 }
