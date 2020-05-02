@@ -54,37 +54,30 @@ export class MainPagePage implements OnInit {
               contador += 1;
             }
           });
-          game.mediaScore = "" + score / contador;
+          game.mediaScore = "" + Math.trunc(score / contador);
           game.releaseDate = new Date(game.releaseDateBD);
           game.releaseDateText = this.textDate(game.releaseDate);
 
-          if (game.releaseDate.getTime() > Date.now()) {
-            this.upcomingGames.push(game);
-          } else if (Date.now() - game.releaseDate.getTime() < 7776000000) {
-            console.log(Date.now() - game.releaseDate.getTime())
-            this.actualGames.push(game);
-            this.actualGames = this.actualGames.sort((a, b) => {
-              if (a.releaseDate < b.releaseDate) {
-                return 1;
-              }
-              if (a.releaseDate > b.releaseDate) {
-                return -1;
-              }
-              return 0;
-            }).slice(0, 5);
+          this.actualUpcomingDivision(game);
 
-          }
           this.games.push(game);
         });
 
         this.actualGames.forEach((game: Game) => {
           this.slideshowImages.push(game.image);
         });
-/*
-        this.halfOfFameGames = this.games.sort((a,b) => {
-        })
-        */
 
+        this.halfofFameActualYear();
+
+        this.halfOfFameGames = this.games.sort((a, b) => {
+          if (a.mediaScore < b.mediaScore) {
+            return 1;
+          } else if (a.mediaScore > b.mediaScore) {
+            return -1;
+          }
+        });
+
+        console.log(this.games);
       });
 
     });
@@ -97,6 +90,49 @@ export class MainPagePage implements OnInit {
     return date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' });
   }
 
+  actualUpcomingDivision(game) {
+    if (game.releaseDate.getTime() > Date.now()) {
+      this.upcomingGames.push(game);
+    }
+    else if (Date.now() - game.releaseDate.getTime() < 7776000000) {
+      console.log(Date.now() - game.releaseDate.getTime())
+      this.actualGames.push(game);
+      this.actualGames = this.actualGames.sort((a, b) => {
+        if (a.releaseDate < b.releaseDate) {
+          return 1;
+        }
+        if (a.releaseDate > b.releaseDate) {
+          return -1;
+        }
+        return 0;
+      }).slice(0, 5);
+    }
+  }
 
+  halfofFameActualYear() {
+    this.games.forEach(
+      (game) => {
+        if (game.releaseDate.getFullYear() == new Date().getFullYear() && +game.mediaScore > 50) {//cambiar el 50
+          this.halfOfFameGames.push(game);
+        }
+      }
+    );
+    this.halfOfFameGames.sort((a, b) => {
+      if (a.mediaScore < b.mediaScore) {
+        return 1;
+      }
+      if (a.mediaScore > b.mediaScore) {
+        return -1;
+      }
+      return 0;
+    });
+
+    this.halfOfFameGames.forEach(
+      (game2) => {
+        this.slideshowImages2.push(game2.image);
+      }
+    )
+
+  }
 
 }

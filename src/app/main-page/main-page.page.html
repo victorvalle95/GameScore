@@ -6,43 +6,56 @@
     <ion-title class="titulo" text-center>GameScore</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-segment scrollable value="heart">
-      <ion-segment-button value="home">
-        Estrenos
+    <ion-segment scrollable value="home">
+      <ion-segment-button value="home" (click)="changeTab()">
+        Home
       </ion-segment-button>
-      <ion-segment-button value="heart">
-        Proximamente
+      <ion-segment-button value="upcoming" (click)="changeTab()">
+        Upcoming
       </ion-segment-button>
-      <ion-segment-button value="pin">
+      <ion-segment-button value="top" (click)="changeTab()">
         Top 2020
       </ion-segment-button>
-      <ion-segment-button value="star">
-        Todos
+      <ion-segment-button value="all" (click)="changeTab()">
+        All
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <h3>Lanzamientos recientes</h3>
+  <div *ngIf="actualGames && actualGames.length>0">
+    <div style="display:block; height:10%">
+      <h3>Lanzamientos recientes</h3>
+      <ion-slides pager="true" [options]="slideshowImages" #slideWithNav2>
+        <ion-slide *ngFor="let s of slideshowImages">
+          <img src="{{s}}">
+        </ion-slide>
+      </ion-slides>
+    </div>
 
-  <ion-slides pager="true" [options]="slideshowImages" #slideWithNav2>
-    <ion-slide *ngFor="let s of slideshowImages">
-      <img src="{{s}}">
-    </ion-slide>
-  </ion-slides>
+    <div style="display:block; height:10%">
+      <h3>Salon de la fama {{fechaActual.getFullYear()}}</h3>
+      <ion-slides pager="true" [options]="slideshowImages2" #slideWithNav2>
+        <ion-slide *ngFor="let s of slideshowImages2">
+          <img src="{{s}}">
+        </ion-slide>
+      </ion-slides>
+    </div>
 
-  <h3>Salon de la fama {{fechaActual.getFullYear()}}</h3>
-  <ion-slides pager="true" [options]="slideshowImages2" #slideWithNav2>
-    <ion-slide *ngFor="let s of slideshowImages2">
-      <img src="{{s}}">
-    </ion-slide>
-  </ion-slides>
+    <div style="display:block; height:10%">
+      <h3>Salon de la fama {{fechaActual.getFullYear()}}</h3>
+      <ion-slides pager="true" [options]="slideshowImages2" #slideWithNav2>
+        <ion-slide *ngFor="let s of slideshowImages2">
+          <img src="{{s}}">
+        </ion-slide>
+      </ion-slides>
+    </div>
 
-
-  <!--
+    <!--
   <ion-list>
       <ion-item color="{{color(game)}}" *ngFor="let game of actualGames">{{ game.name }} - {{game.releaseDateText}}</ion-item>
   </ion-list>
   -->
+  </div>
 </ion-content>
