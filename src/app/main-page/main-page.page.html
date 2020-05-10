@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-title class="titulo" text-center>GameScore</ion-title>
   </ion-toolbar>
+
   <ion-toolbar>
     <ion-segment scrollable>
       <ion-segment-button (click)="changeTab('1')">
@@ -15,6 +16,22 @@
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
+  <!-- <ion-toolbar *ngIf=searchControl style="font-size: 4px;">
+    <ion-segment>
+      <ion-segment-button (click)="changeSearch()">
+        Games
+      </ion-segment-button>
+      <ion-segment-button>
+        Directors
+      </ion-segment-button>
+      <ion-segment-button>
+        Developers
+      </ion-segment-button>
+      <ion-segment-button>
+        Publishers
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>-->
 </ion-header>
 
 <ion-content>
@@ -35,7 +52,7 @@
 
     <h3>Hall of Fame {{fechaActual.getFullYear()}}</h3>
     <ion-slides pager="true" [options]="slideHallofFame" #slideWithNav2>
-      <ion-slide *ngFor="let s of halfOfFameGames.slice(0,5)">
+      <ion-slide *ngFor="let s of actualYearGames.slice(0,5)">
         <ion-img src="{{s.image}}"> </ion-img>
       </ion-slide>
     </ion-slides>
@@ -43,14 +60,40 @@
 
   <div *ngIf=actualYearControl>
     <ion-list>
-      <ion-item color="{{color(game)}}" *ngFor="let game of actualGames">{{ game.name }} - {{game.releaseDateText}} <h3 slot="end">{{game.mediaScore}}</h3>
+      <ion-item color="{{color(game)}}" *ngFor="let game of actualYearGames">{{ game.name }} - {{game.releaseDateText}} <h3 slot="end">{{game.mediaScore}}</h3>
       </ion-item>
     </ion-list>
   </div>
 
   <div *ngIf=searchControl>
-    <ion-list>
-      <ion-item color="{{color(game)}}" *ngFor="let game of games">{{ game.name }} - {{game.releaseDateText}} <h3 slot="end">{{game.mediaScore}}</h3>
+    <ion-item>
+      <ion-label>Choose One</ion-label>
+      <ion-select #selectSearch2 id="selectSearch2" name="selectSearch2" (ionChange)="changeSelectSearch(selectSearch2.value)" placeholder="Games">
+        <ion-select-option value="games" selected>Games</ion-select-option>
+        <ion-select-option value="directors">Directors</ion-select-option>
+        <ion-select-option value="developers">Developers</ion-select-option>
+        <ion-select-option value="publishers">Publishers</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-searchbar animated (ionChange)="search($event)"></ion-searchbar>
+
+    <ion-list *ngIf="selectSearch=='games'">
+      <ion-item  name="list" color="{{color(game)}}" *ngFor="let game of searchedGames">{{ game.name }} - {{game.releaseDateText}} <h3 slot="end">{{game.mediaScore}}</h3>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="selectSearch=='directors'">
+      <ion-item  name="list2"  *ngFor="let director of searchedDirectors">{{ director.name }}
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="selectSearch=='developers'">
+      <ion-item  name="list3"  *ngFor="let developer of searchedDevelopers">{{ developer.name }}
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="selectSearch=='publishers'">
+      <ion-item  name="list4"  *ngFor="let publisher of searchedPublishers">{{ publisher.name }}
       </ion-item>
     </ion-list>
   </div>

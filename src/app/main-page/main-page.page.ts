@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FirebaseService } from 'src/services/firebase.service';
 import { Game } from '../models/game';
 import { Critic } from '../models/critic';
+import { Director } from '../models/director';
+import { Developer } from '../models/developer';
+import { Publisher } from '../models/publisher';
 
 
 @Component({
@@ -11,11 +14,14 @@ import { Critic } from '../models/critic';
 })
 export class MainPagePage implements OnInit {
 
-  games: Game[] = []; // 
+  games: Game[] = []; // Todos los juegos
   upcomingGames: Game[] = []; // Juegos que aún no han salido
-  halfOfFameGames: Game[] = []; //Hall de la fama
+  actualYearGames: Game[] = []; //Juegos del año en curso
   actualGames: Game[] = []; // con menos de 90 días
 
+  directors: Director[];
+  publishers: Publisher[];
+  developers: Developer[];
 
   critics: Critic[] = [];
   mediaScore: string;
@@ -25,6 +31,12 @@ export class MainPagePage implements OnInit {
   mainControl: Boolean = true;
   actualYearControl: Boolean = false;
   searchControl: Boolean = false;
+
+  selectSearch: String = "games";
+  searchedGames: Game[];
+  searchedDirectors: Director[];
+  searchedDevelopers: Developer[];
+  searchedPublishers: Publisher[];
 
   constructor(
     public firebaseService: FirebaseService,
@@ -65,23 +77,46 @@ export class MainPagePage implements OnInit {
         });
 
         //ordenamos listas
+        this.actualYearGamesSelection();
+
         this.games = this.orderByScore(this.games);
         this.actualGames = this.orderByScore(this.actualGames);
 
-        this.halfofFameActualYear();
 
-        this.halfOfFameGames = this.games.sort((a, b) => {
-          if (a.mediaScore < b.mediaScore) {
-            return 1;
-          } else if (a.mediaScore > b.mediaScore) {
-            return -1;
+        this.actualYearGames = this.orderByScore(this.actualYearGames);
+        this.searchedGames = this.games;
+
+        this.firebaseService.getDirectors().subscribe(
+          (data: Director[]) => {
+            this.directors = data;
+            console.log(this.directors);
+            this.directors = this.orderByText(this.directors);
+            this.searchedDirectors = this.directors;
           }
-        });
+        );
+
+        this.firebaseService.getPublishers().subscribe(
+          (data2: Publisher[]) => {
+            this.publishers = data2;
+            this.publishers = this.orderByText(this.publishers);
+            this.searchedPublishers = this.publishers;
+          }
+        );
+
+        this.firebaseService.getDevelopers().subscribe(
+          (data3: Developer[]) => {
+            this.developers = data3;
+            this.developers = this.orderByText(this.developers);
+            this.searchedDevelopers = this.developers;
+          }
+        );
+
+
         console.log(this.games);
+        console.log(this.directors);
+
       });
-
     });
-
   }
 
   color(value: Game) {
@@ -97,7 +132,6 @@ export class MainPagePage implements OnInit {
     }
   }
 
-
   textDate(date: Date) {
     //Asi es como se mostrará en la lista el tiempo que le queda para salir
     return date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' });
@@ -107,7 +141,6 @@ export class MainPagePage implements OnInit {
     if (game.releaseDate.getTime() > Date.now() || game.releaseDateBD == "TBD") {
       this.upcomingGames.push(game);
     }
-
     else if (Date.now() - game.releaseDate.getTime() < 7776000000) { //90 días = 7776000000
       console.log(Date.now() - game.releaseDate.getTime())
       this.actualGames.push(game);
@@ -123,15 +156,15 @@ export class MainPagePage implements OnInit {
     }
   }
 
-  halfofFameActualYear() {
+  actualYearGamesSelection() {
     this.games.forEach(
       (game) => {
-        if (game.releaseDate.getFullYear() == new Date().getFullYear() && game.releaseDate <= new Date() && +game.mediaScore > 50) {//cambiar el 50
-          this.halfOfFameGames.push(game);
+        if (game.releaseDate.getFullYear() == new Date().getFullYear() && game.releaseDate <= new Date()) {//cambiar el 50
+          this.actualYearGames.push(game);
         }
       }
     );
-    this.halfOfFameGames.sort((a, b) => {
+    this.actualYearGames.sort((a, b) => {
       if (a.mediaScore < b.mediaScore) {
         return 1;
       }
@@ -140,22 +173,41 @@ export class MainPagePage implements OnInit {
       }
       return 0;
     });
-
   }
 
   orderByScore(games) {
     games.sort((a, b) => {
-      if (a.mediaScore.length > 1) {
+      if (a.mediaScore == '-') {
+        return 1;
+      }
+      else {
         if (+a.mediaScore < +b.mediaScore) {
           return 1;
         }
         if (+a.mediaScore > +b.mediaScore) {
           return -1;
         }
+        return 0;
       }
-      return 0;
     });
     return games;
+  }
+
+  orderByText(values) {
+    values.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+
+      if (a.name > b.name) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    return values;
+
   }
 
 
@@ -174,5 +226,100 @@ export class MainPagePage implements OnInit {
       this.searchControl = true;
     }
   }
+
+  search(event) {
+    console.log(event);
+    console.log(this.selectSearch);
+    if (this.selectSearch == "games") {
+      this.searchGame(event.detail.value);
+    } else if (this.selectSearch == "directors") {
+      this.searchDirector(event.detail.value);
+    }
+  }
+
+  searchGame(event: string) {
+    if (event == "") {
+      this.searchedGames = [];
+      this.searchedGames.values = this.games.values;
+    } else {
+      this.searchedGames = [];
+    }
+
+    this.games.forEach(
+      (game: Game) => {
+        if (game.name.toUpperCase().includes(event.toUpperCase())) {
+          this.searchedGames.push(game);
+        }
+      }
+    )
+    console.log(this.games)
+  }
+
+  searchDirector(event: string) {
+    if (event == "") {
+      this.searchedDirectors = [];
+      this.searchedDirectors.values = this.directors.values;
+
+    } else {
+      this.searchedDirectors = [];
+    }
+
+    this.directors.forEach(
+      (director: Director) => {
+        if (director.name.toUpperCase().includes(event.toUpperCase())) {
+          this.searchedDirectors.push(director);
+        }
+      }
+    )
+    console.log(this.directors);
+  }
+
+  searchDeveloper(event: string) {
+    if (event == "") {
+      this.searchedDevelopers = [];
+      this.searchedDevelopers.values = this.developers.values;
+
+    } else {
+      this.searchedDevelopers = [];
+    }
+
+    this.developers.forEach(
+      (developer: Developer) => {
+        if (developer.name.toUpperCase().includes(event.toUpperCase())) {
+          this.searchedDevelopers.push(developer);
+        }
+      }
+    )
+    console.log(this.developers);
+  }
+
+
+  searchPublisher(event: string) {
+    if (event == "") {
+      this.searchedPublishers = [];
+      this.searchedPublishers.values = this.publishers.values;
+
+    } else {
+      this.searchedPublishers = [];
+    }
+
+    this.publishers.forEach(
+      (publisher: Publisher) => {
+        if (publisher.name.toUpperCase().includes(event.toUpperCase())) {
+          this.searchedPublishers.push(publisher);
+        }
+      }
+    )
+    console.log(this.publishers);
+  }
+
+
+
+  changeSelectSearch(selectSearch: String) {
+    this.selectSearch = selectSearch;
+    console.log(this.selectSearch);
+  }
+
+
 
 }

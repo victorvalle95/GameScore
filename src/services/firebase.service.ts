@@ -52,7 +52,7 @@ export class FirebaseService {
   }
   public removeGame(id) {
     this.afDB.database.ref('games/' + id).remove();
-  }
+  } 
 
   public getCritics() {
     return this.afDB.list('critics/').valueChanges();
@@ -69,6 +69,58 @@ export class FirebaseService {
   }
   public removeCritic(id) {
     this.afDB.database.ref('critics/' + id).remove();
+  }
+
+  public getDirectors() {
+    return this.afDB.list('directors/').valueChanges();
+  }
+  public saveDirector(critic:Critic,length) {
+      critic.id = length;
+      this.afDB.database.ref('directors/' + critic.id).set(critic);
+  }
+  public updateDirector(usuario) {
+    this.afDB.database.ref('directors/' + usuario.id).set(usuario);
+  }
+  public getDirector(id) {
+    return this.afDB.object('directors/' + id).valueChanges();
+  }
+  
+  public removeDirector(id) {
+    this.afDB.database.ref('directors/' + id).remove();
+  }
+
+  public getDevelopers() {
+    return this.afDB.list('developers/').valueChanges();
+  }
+  public saveDeveloper(critic:Critic,length) {
+      critic.id = length;
+      this.afDB.database.ref('developers/' + critic.id).set(critic);
+  }
+  public updateDeveloper(usuario) {
+    this.afDB.database.ref('developers/' + usuario.id).set(usuario);
+  }
+  public getDeveloper(id) {
+    return this.afDB.object('developers/' + id).valueChanges();
+  }
+  public removeDeveloper(id) {
+    this.afDB.database.ref('developers/' + id).remove();
+  }
+  
+  public getPublishers() {
+    return this.afDB.list('publishers/').valueChanges();
+  }
+  public savePublisher(critic:Critic,length) {
+      critic.id = length;
+      this.afDB.database.ref('publishers/' + critic.id).set(critic);
+  }
+  public updatePublisher(usuario) {
+    this.afDB.database.ref('publishers/' + usuario.id).set(usuario);
+  }
+  public getPublisher(id) {
+    return this.afDB.object('publishers/' + id).valueChanges();
+  }
+  public removePublisher(id) {
+    this.afDB.database.ref('publishers/' + id).remove();
   }
 
   public getMedia(){
