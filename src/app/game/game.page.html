@@ -1,9 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>game</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo" text-center>GameScore</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div class="imagen">
+    <p>{{game.name}}</p>
+    <img src="{{game.image}}">
+  </div>
+  <div class="mediaScore">
+    <label>Media score</label>
+    <ion-card color="warning">
+      <p>{{mediaScore}}</p>
+    </ion-card>
+  </div>
+  <div class="userScore">
+    <label>User score</label>
+    <ion-card color="warning">
+      <p>{{userScore}}</p>
+    </ion-card>
+  </div>
 </ion-content>

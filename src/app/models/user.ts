@@ -5,7 +5,7 @@ export class User{
     username: string;
     password: string;
     email: string;
-    id_press: boolean;
+    id_media: string;
     id: string;
     tlf: string;
 }

@@ -15,7 +15,7 @@ export class LoginPage implements OnInit {
   errorMessage: string;
   successMessage: string;
   users = [];
-  userLoged;
+  userLoged: any;
 
 
   constructor(

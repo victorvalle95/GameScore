@@ -19,7 +19,18 @@ const routes: Routes = [
     path: 'register', 
     loadChildren: './register/register.module#RegisterPageModule' 
   },
-  { path: 'main-page', loadChildren: './main-page/main-page.module#MainPagePageModule' },  { path: 'game', loadChildren: './game/game.module#GamePageModule' }
+  { 
+    path: 'main-page', 
+    loadChildren: './main-page/main-page.module#MainPagePageModule' 
+  },
+  { 
+    path: 'game', 
+    loadChildren: './game/game.module#GamePageModule' 
+  },
+  {
+    path: 'game/:idGame',
+    loadChildren: './game/game.module#GamePageModule'
+  }
 
 
 

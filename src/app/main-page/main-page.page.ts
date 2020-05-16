@@ -5,6 +5,7 @@ import { Critic } from '../models/critic';
 import { Director } from '../models/director';
 import { Developer } from '../models/developer';
 import { Publisher } from '../models/publisher';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class MainPagePage implements OnInit {
   actualYearControl: Boolean = false;
   searchControl: Boolean = false;
 
-  selectSearch: String = "games";
+  selectSearch: string = "games";
   searchedGames: Game[];
   searchedDirectors: Director[];
   searchedDevelopers: Developer[];
@@ -40,6 +41,7 @@ export class MainPagePage implements OnInit {
 
   constructor(
     public firebaseService: FirebaseService,
+    public route:Router
   ) { }
 
   ngOnInit() {
@@ -111,10 +113,8 @@ export class MainPagePage implements OnInit {
           }
         );
 
-
         console.log(this.games);
-        console.log(this.directors);
-
+        console.log(this.actualGames);
       });
     });
   }
@@ -234,6 +234,10 @@ export class MainPagePage implements OnInit {
       this.searchGame(event.detail.value);
     } else if (this.selectSearch == "directors") {
       this.searchDirector(event.detail.value);
+    } else if (this.selectSearch == "developers") {
+      this.searchDeveloper(event.detail.value);
+    } else if (this.selectSearch == "publishers") {
+      this.searchPublisher(event.detail.value);
     }
   }
 
@@ -315,9 +319,13 @@ export class MainPagePage implements OnInit {
 
 
 
-  changeSelectSearch(selectSearch: String) {
+  changeSelectSearch(selectSearch: string) {
     this.selectSearch = selectSearch;
     console.log(this.selectSearch);
+  }
+
+  goToGame(idGame: string) {
+    this.route.navigate(['/game',idGame]);
   }
 
 
