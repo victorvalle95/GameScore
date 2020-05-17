@@ -11,8 +11,10 @@ import { Critic } from "src/app/models/critic";
 export class FirebaseService {
   mediaCritics: Critic[] = [];
   userCritics: Critic[] = [];
+  userScore: string;
+  mediaScore: string;
 
-  constructor(public afDB: AngularFireDatabase) {}
+  constructor(public afDB: AngularFireDatabase) { }
 
   public getUsuarios() {
     return this.afDB.list("users/").valueChanges();
@@ -69,36 +71,14 @@ export class FirebaseService {
     this.afDB.database.ref("critics/" + id).remove();
   }
 
-  public getCriticsOfXGame(idGame) {
-    let criticsOfXGame: Critic[] = [];
-
-    this.getCritics().subscribe((data: Critic[]) => {
-      data.forEach((critic: Critic) => {
-        if (critic.id_game === idGame) {
-          criticsOfXGame.push(critic);
-        }
-      });
-
-      criticsOfXGame.forEach((critic2: Critic) => {
-        this.getUsuario(critic2.id_user).subscribe((userData: User) => {
-          if (userData.id_media == "0") {
-            this.userCritics.push(critic2);
-          } else {
-            this.mediaCritics.push(critic2);
-          }
-        });
-      });
-    });
+  public getUserScore(idGame) {
+    //this.getUserCritics(idGame);
+    return this.userScore;
   }
 
-  public getMediaCritics(idGame) {
-    this.getCriticsOfXGame(idGame);
-    return this.mediaCritics;
-  }
-
-  public getUserCritics(idGame) {
-    this.getCriticsOfXGame(idGame);
-    return this.userCritics;
+  public getMediaScore(idGame) {
+    //this.getMediaCritics(idGame);
+    return this.mediaScore;
   }
 
   public getDirectors() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 import { FirebaseService } from 'src/services/firebase.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,8 +22,12 @@ export class LoginPage implements OnInit {
     public authService: AuthFirebaseService,
     public firebaseService: FirebaseService,
     public alertController: AlertController,
-    public route:Router) 
+    public route:Router,
+    private menuCtrl: MenuController
+    ) 
   {
+    this.menuCtrl.enable(false);
+
     firebaseService.getUsuarios()
       .subscribe(data => {
         this.users = data;

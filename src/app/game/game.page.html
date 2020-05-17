@@ -14,14 +14,26 @@
   </div>
   <div class="mediaScore">
     <label>Media score</label>
-    <ion-card color="warning">
+    <ion-card color="{{color(mediaScore)}}">
       <p>{{mediaScore}}</p>
     </ion-card>
   </div>
   <div class="userScore">
     <label>User score</label>
-    <ion-card color="warning">
+    <ion-card color="{{color(userScore)}}">
       <p>{{userScore}}</p>
     </ion-card>
+  </div>
+  <div class="critics">
+    <label>Professional Critics</label>
+    <ion-list style="position:relative; top:0px">
+      <ion-item name="list2" *ngFor="let critic of mediaCritics.slice(0,2)">
+        <p>{{ critic.comments }} - {{critic.media}} </p>
+        <ion-card color="{{color(critic.score)}}">
+          <p>{{mediaScore}}</p>
+        </ion-card>
+      </ion-item>
+      <button *ngIf="mediaCritics.length>5">+</button>
+    </ion-list>
   </div>
 </ion-content>

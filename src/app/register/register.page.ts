@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, MenuController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/services/firebase.service';
@@ -29,6 +29,8 @@ export class RegisterPage implements OnInit {
     public translate: TranslateService,
     public firebase: FirebaseService,
     public toastController: ToastController,
+    private menuCtrl: MenuController,
+
     public router: Router) {
     this.registerForm = this.formBuilder.group({
       first_name: ['', Validators.required],
@@ -42,6 +44,8 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.menuCtrl.enable(false);
+
     this.firebase.getUsuarios().subscribe(
       (data: User[]) => {
         this.users = data;
@@ -124,7 +128,7 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  changeControlMedia(){
+  changeControlMedia() {
     this.controlMedia = false;
   }
 

@@ -4,4 +4,5 @@ export class Critic{
     id_game:string;
     id_user:string;
     score:string;
+    media:string;
 }

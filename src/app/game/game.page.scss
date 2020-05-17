@@ -1,3 +1,5 @@
+@import "../../general.css";
+
 .imagen {
   position: relative;
   float: left;
@@ -14,8 +16,8 @@
   float: left;
   top: 10px;
   height: 60px;
-
   width: 20%;
+  left: 5%;
 }
 
 .userScore label {
@@ -35,12 +37,12 @@
 }
 
 .userScore p {
-    position: relative;
-    top: 10px;
-    color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-  }
-  
+  position: relative;
+  top: 10px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
 
 .mediaScore {
   position: relative;
@@ -48,7 +50,6 @@
   top: 10px;
   width: 20%;
   height: 60px;
-  margin-left: 5%;
 }
 
 .mediaScore label {
@@ -70,5 +71,34 @@
   position: relative;
   top: 10px;
   color: white;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
+
+.critics{
+  position: absolute;
+  left:5px;
+  top: 25%;
+  margin-top:2%;
+  width:100%;
+  text-align: center;
+}
+
+.critics p{
+  width:80%;
+}
+
+.critics ion-card{
+  width:20%;
+  text-align: center;
+  align-content: center;
+}
+
+.critics ion-card p {
+  position: relative;
+  left: 10%;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+

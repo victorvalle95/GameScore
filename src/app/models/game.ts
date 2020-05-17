@@ -19,4 +19,8 @@ export class Game{
     color: string;
     id_critic: string;
     mediaScore: string;
+
+    constructor(){
+        this.releaseDate = new Date();
+    }
 }

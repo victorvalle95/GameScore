@@ -1,8 +1,18 @@
 .titulo {
-    margin-left:-20%;
+  margin-left: -20%;
 }
 
 .submenu {
-    font-size:14px;
-    height: fit-content;
+  font-size: 14px;
+  height: fit-content;
 }
+
+.ion-color-favorite {
+    --ion-color-base: #275832;
+    --ion-color-base-rgb: 39, 88, 50;
+    --ion-color-contrast: #ffffff;
+    --ion-color-contrast-rgb: 255, 255, 255;
+    --ion-color-shade: #224d2c;
+    --ion-color-tint: #3d6947;
+  }
+  

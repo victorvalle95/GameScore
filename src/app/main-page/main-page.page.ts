@@ -6,6 +6,8 @@ import { Director } from '../models/director';
 import { Developer } from '../models/developer';
 import { Publisher } from '../models/publisher';
 import { Router } from '@angular/router';
+import { User } from '../models/user';
+import { MenuController } from '@ionic/angular';
 
 
 @Component({
@@ -41,8 +43,12 @@ export class MainPagePage implements OnInit {
 
   constructor(
     public firebaseService: FirebaseService,
-    public route:Router
-  ) { }
+    public route: Router,
+    private menuCtrl: MenuController
+
+  ) {
+    this.menuCtrl.enable(false);
+  }
 
   ngOnInit() {
     this.cargarDatosEnCascada();
@@ -50,85 +56,107 @@ export class MainPagePage implements OnInit {
 
   cargarDatosEnCascada() {
     //lo hacemos así por la asincronía
-    this.firebaseService.getGames().subscribe((data: any) => {
-      let gamesAux = data;
-      this.firebaseService.getCritics().subscribe((data2: any) => {
+    this.firebaseService.getGames().subscribe((data: Game[]) => {
+      console.log(data);
+      this.firebaseService.getCritics().subscribe((data2: Critic[]) => {
         this.critics = data2;
-        gamesAux.forEach((game: Game) => {
+        data.forEach((game: Game) => {
           //de momento supondremos que todos los usuarios sean media
           let score: number = 0;
           let contador = 0;
           this.critics.forEach((critic: Critic) => {
-            if (critic.id_game == game.id) {
-              score += Math.round(+critic.score);
-              contador += 1;
-            }
+            this.firebaseService.getUsuario(+critic.id_user - 1).subscribe(
+              (user: User) => {
+                if (user.id_media != "0") {
+                  if (critic.id_game == game.id) {
+                    score += Math.round(+critic.score);
+                    contador += 1;
+                  }
+                }
+              }
+            );
           });
-          game.mediaScore = "" + Math.trunc(score / contador);
-          if (game.mediaScore == "NaN") {
-            game.mediaScore = "-";
-          } else if (game.mediaScore.length < 2) {
-            game.mediaScore = "0" + game.mediaScore;
+          setTimeout(() => {
+            game.mediaScore = "" + Math.trunc(score / contador);
+            if (game.mediaScore == "NaN") {
+              game.mediaScore = "-";
+            } else if (game.mediaScore.length < 2) {
+              game.mediaScore = "0" + game.mediaScore;
+            }
+            if (game.releaseDateBD != "TBD") {
+              game.releaseDate = new Date(game.releaseDateBD);
+              game.releaseDateText = this.textDate(game.releaseDate);
+            } else {
+              game.releaseDateText = "TBD";
+            }
+
+            if (game.releaseDateBD == "TBD" || game.releaseDate.getTime() > Date.now()
+            ) {
+              game.mediaScore = "-";
+            }
+
+            this.actualUpcomingDivision(game);
+
+            this.games.push(game);
           }
-          game.releaseDate = new Date(game.releaseDateBD);
-          game.releaseDateText = this.textDate(game.releaseDate);
-
-          this.actualUpcomingDivision(game);
-
-          this.games.push(game);
+            , 1000);
         });
 
-        //ordenamos listas
-        this.actualYearGamesSelection();
+        setTimeout(() => {
+          //ordenamos listas
+          this.actualYearGamesSelection();
 
-        this.games = this.orderByScore(this.games);
-        this.actualGames = this.orderByScore(this.actualGames);
+          this.games = this.orderByScore(this.games);
+          this.actualGames = this.orderByScore(this.actualGames);
 
 
-        this.actualYearGames = this.orderByScore(this.actualYearGames);
-        this.searchedGames = this.games;
+          this.actualYearGames = this.orderByScore(this.actualYearGames);
+          this.searchedGames = this.games;
 
-        this.firebaseService.getDirectors().subscribe(
-          (data: Director[]) => {
-            this.directors = data;
-            console.log(this.directors);
-            this.directors = this.orderByText(this.directors);
-            this.searchedDirectors = this.directors;
-          }
-        );
+          this.firebaseService.getDirectors().subscribe(
+            (data: Director[]) => {
+              this.directors = data;
+              console.log(this.directors);
+              this.directors = this.orderByText(this.directors);
+              this.searchedDirectors = this.directors;
+            }
+          );
 
-        this.firebaseService.getPublishers().subscribe(
-          (data2: Publisher[]) => {
-            this.publishers = data2;
-            this.publishers = this.orderByText(this.publishers);
-            this.searchedPublishers = this.publishers;
-          }
-        );
+          this.firebaseService.getPublishers().subscribe(
+            (data2: Publisher[]) => {
+              this.publishers = data2;
+              this.publishers = this.orderByText(this.publishers);
+              this.searchedPublishers = this.publishers;
+            }
+          );
 
-        this.firebaseService.getDevelopers().subscribe(
-          (data3: Developer[]) => {
-            this.developers = data3;
-            this.developers = this.orderByText(this.developers);
-            this.searchedDevelopers = this.developers;
-          }
-        );
+          this.firebaseService.getDevelopers().subscribe(
+            (data3: Developer[]) => {
+              this.developers = data3;
+              this.developers = this.orderByText(this.developers);
+              this.searchedDevelopers = this.developers;
+            }
+          );
+          console.log(this.games);
 
-        console.log(this.games);
-        console.log(this.actualGames);
+        }, 1500);
       });
     });
   }
 
   color(value: Game) {
-    if (value.mediaScore == "-") {
-      return 'medium'
-    }
-    else if (+value.mediaScore < 50) {
+
+    if (+value.mediaScore < 50) {
       return 'danger';
-    } else if (+value.mediaScore < 75) {
+    } else if (+value.mediaScore < 70) {
       return 'warning';
-    } else {
+    } else if (+value.mediaScore < 80) {
       return 'success';
+    } else if (+value.mediaScore < 101) {
+      return 'success';
+    }
+    else {
+      return 'medium';
     }
   }
 
@@ -138,7 +166,7 @@ export class MainPagePage implements OnInit {
   }
 
   actualUpcomingDivision(game: Game) {
-    if (game.releaseDate.getTime() > Date.now() || game.releaseDateBD == "TBD") {
+    if (game.releaseDateBD == "TBD" || game.releaseDate.getTime() > Date.now()) {
       this.upcomingGames.push(game);
     }
     else if (Date.now() - game.releaseDate.getTime() < 7776000000) { //90 días = 7776000000
@@ -159,7 +187,8 @@ export class MainPagePage implements OnInit {
   actualYearGamesSelection() {
     this.games.forEach(
       (game) => {
-        if (game.releaseDate.getFullYear() == new Date().getFullYear() && game.releaseDate <= new Date()) {//cambiar el 50
+
+        if (game.releaseDate && game.releaseDate.getFullYear() == new Date().getFullYear() && game.releaseDate <= new Date()) {//cambiar el 50
           this.actualYearGames.push(game);
         }
       }
@@ -325,7 +354,7 @@ export class MainPagePage implements OnInit {
   }
 
   goToGame(idGame: string) {
-    this.route.navigate(['/game',idGame]);
+    this.route.navigate(['/game', idGame]);
   }
 
 
