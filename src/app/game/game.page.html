@@ -3,7 +3,15 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title class="titulo" text-center>GameScore</ion-title>
+    <ion-title class="titulo">GameScore</ion-title>
+    <ion-buttons slot="end">
+      <ion-thumbnail style="margin-right: 10px; margin-top: 3px" *ngIf="userLoged.id!='0'" (click)="presentModalUsuario()">
+        <img style="border-radius: 100%; " src="{{userLoged.image}}">
+      </ion-thumbnail>
+      <ion-thumbnail style="margin-right: 10px; margin-top: 27px" *ngIf="userLoged.id=='0'">
+        Guest
+      </ion-thumbnail>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -25,15 +33,75 @@
     </ion-card>
   </div>
   <div class="critics">
-    <label>Professional Critics</label>
-    <ion-list style="position:relative; top:0px">
-      <ion-item name="list2" *ngFor="let critic of mediaCritics.slice(0,2)">
-        <p>{{ critic.comments }} - {{critic.media}} </p>
-        <ion-card color="{{color(critic.score)}}">
-          <p>{{mediaScore}}</p>
-        </ion-card>
-      </ion-item>
-      <button *ngIf="mediaCritics.length>5">+</button>
-    </ion-list>
+    <div *ngIf="showCritics()">
+      <label class="label">Professional Critics</label>
+      <ion-list style="position:relative; top:0px">
+        <ion-item *ngFor="let critic of mediaCritics.slice(0,1)">
+          <p>{{ critic.comments }} - {{critic.media}} </p>
+          <ion-card class="score" color="{{color(critic.score)}}">
+            <p>{{critic.score}}</p>
+          </ion-card>
+        </ion-item>
+        <ion-card class="foro" color="secondary" (click)="presentModal()">More professional critics</ion-card>
+      </ion-list>
+      <ion-card class="foro" color="dark" (click)="presentModalUserCritic()">Go to user critics</ion-card>
+    </div>
+    <label>Screenshots</label>
+    <ion-slides class="screenshots" pager="true" [options]="screenshots" #slideWithNav>
+      <ion-slide *ngFor="let s of screenshots">
+        <ion-img src="{{s}}"> </ion-img>
+      </ion-slide>
+    </ion-slides>
+    <ion-card class="foro" color="tertiary" (click)="openVideo()">Click me for see a trailer</ion-card>
+    <ion-card class="datosVarios">
+      <ion-grid>
+        <ion-row>
+          <ion-col align="center">Details of the game</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Director: <a (click)="goToDirector()">{{this.director.name}}</a>
+          </ion-col>
+          <ion-col>
+            Genres: {{this.genres}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Developer: <a (click)="goToDeveloper()">{{this.developer.name}}</a>
+          </ion-col>
+          <ion-col>
+            Price: {{this.game.price}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Publisher: <a (click)="goToPublisher()">{{this.publisher.name}}</a>
+          </ion-col>
+          <ion-col>
+            Sales: {{this.game.sales}}m
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Summary
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            {{this.game.summary}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
   </div>
+
 </ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar lines=none>
+    <ion-card color="tertiary" (click)="goToSuggestions()" text-center>
+      <ion-card-title>Do you have any suggestion?</ion-card-title>
+    </ion-card>
+  </ion-toolbar>
+</ion-footer>

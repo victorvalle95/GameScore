@@ -1,0 +1,45 @@
+@import "../../general.css";
+
+.imagen {
+  position: relative;
+  float: right;
+  margin-left: 10px;
+  margin-right: 15px;
+  width: 40% !important;
+  height: 30% !important;
+  top: 10px;
+  font-size: 13px;
+}
+
+.titulo {
+  position: relative;
+  left: 20%;
+}
+
+.datosVarios {
+  font-size: 13px;
+  width: 50% !important;
+  text-align: center;
+}
+
+.datosVarios label {
+  margin-bottom: 2%;
+  margin-left: -22%;
+}
+
+.texto {
+  text-align: center;
+  font-size: larger;
+  margin-top: 10px;
+}
+
+.gamesRelationed {
+  position: absolute;
+  top: 30%;
+  width: 100%;
+}
+
+.gamesRelationed p {
+    font-size: large;
+    text-align: center;
+}

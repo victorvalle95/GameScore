@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 import { FirebaseService } from 'src/services/firebase.service';
-import { AlertController, MenuController } from '@ionic/angular';
+import { AlertController, MenuController, Platform, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-login',
@@ -14,22 +15,23 @@ export class LoginPage implements OnInit {
   loginCorrecto: boolean;
   errorMessage: string;
   successMessage: string;
-  users = [];
-  userLoged: any;
+  userLoged: User = new User();
+  users: User[] = [];
 
 
   constructor(
-    public authService: AuthFirebaseService,
-    public firebaseService: FirebaseService,
-    public alertController: AlertController,
-    public route:Router,
+    private authService: AuthFirebaseService,
+    private firebaseService: FirebaseService,
+    private alertController: AlertController,
+    private route: Router,
+    private platform: Platform,
+    private navCtrl: NavController,
     private menuCtrl: MenuController
-    ) 
-  {
+  ) {
     this.menuCtrl.enable(false);
 
     firebaseService.getUsuarios()
-      .subscribe(data => {
+      .subscribe((data: User[]) => {
         this.users = data;
       });
   }
@@ -38,60 +40,33 @@ export class LoginPage implements OnInit {
     this.loginCorrecto = false;
   }
 
-  login(email, pass) {
-    this.route.navigate(['/main-page']);
-    /*
-    this.authService.signInWithEmail(email.value, pass.value).then(
-      res => {
-        console.log(res);
-        this.errorMessage = "";
-        this.successMessage = "Your account has been loged";
-        for (let user of this.users) {
-          if (user.email == email) {
-            this.userLoged = user;
-          }
-        }
-      }, err => {
-        console.log(err);
-        this.errorMessage = err.message;
-        this.successMessage = "";
-      });
-      */
+  login(username, pass) {
+    for (let user of this.users) {
+      if (user.username == username.value && user.password == pass.value) {
+          this.userLoged = user;
+          this.route.navigate(['/main-page', this.userLoged.id]);
+          return "";
+      } 
+    }
+    this.presentAlert("Incorrect user datas");
   }
 
-  async recuperarEmailAlert() {
+  loginGuest(){
+    this.route.navigate(['/main-page', '0']);
+  }
+
+  async presentAlert(msg) {
     const alert = await this.alertController.create({
-      header: 'Prompt!',
-      inputs: [
-        {
-          name: 'emailRecover',
-          type: 'text',
-          placeholder: 'Email'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: (data) => {
-            console.log('Confirm Ok');
-            this.authService.recoveryPassword(data.emailRecover);
-          }
-        }
-      ]
+      cssClass: 'alert',
+      header: 'Error',
+      message: msg,
+      buttons: ['OK']
     });
 
     await alert.present();
   }
 
-  googleAuth() {
-    this.authService.googleAuth();
+  goToSuggestions(){
+    this.route.navigate(['/suggestions']);
   }
-
 }

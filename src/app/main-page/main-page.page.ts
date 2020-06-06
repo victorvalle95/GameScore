@@ -5,9 +5,10 @@ import { Critic } from '../models/critic';
 import { Director } from '../models/director';
 import { Developer } from '../models/developer';
 import { Publisher } from '../models/publisher';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../models/user';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
+import { UserComponent } from '../user/user.component';
 
 
 @Component({
@@ -16,6 +17,9 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./main-page.page.scss'],
 })
 export class MainPagePage implements OnInit {
+
+  paramUserLoged: string;
+  userLoged: User = new User();
 
   games: Game[] = []; // Todos los juegos
   upcomingGames: Game[] = []; // Juegos que aún no han salido
@@ -44,14 +48,15 @@ export class MainPagePage implements OnInit {
   constructor(
     public firebaseService: FirebaseService,
     public route: Router,
-    private menuCtrl: MenuController
-
+    public activatedRoute: ActivatedRoute,
+    public modalController: ModalController
   ) {
-    this.menuCtrl.enable(false);
   }
 
   ngOnInit() {
     this.cargarDatosEnCascada();
+    this.cargarUserLoged();
+
   }
 
   cargarDatosEnCascada() {
@@ -79,7 +84,7 @@ export class MainPagePage implements OnInit {
           setTimeout(() => {
             game.mediaScore = "" + Math.trunc(score / contador);
             if (game.mediaScore == "NaN") {
-              game.mediaScore = "-";
+              game.mediaScore = "--";
             } else if (game.mediaScore.length < 2) {
               game.mediaScore = "0" + game.mediaScore;
             }
@@ -92,7 +97,7 @@ export class MainPagePage implements OnInit {
 
             if (game.releaseDateBD == "TBD" || game.releaseDate.getTime() > Date.now()
             ) {
-              game.mediaScore = "-";
+              game.mediaScore = "--";
             }
 
             this.actualUpcomingDivision(game);
@@ -148,12 +153,12 @@ export class MainPagePage implements OnInit {
 
     if (+value.mediaScore < 50) {
       return 'danger';
-    } else if (+value.mediaScore < 70) {
+    } else if (+value.mediaScore < 75) {
       return 'warning';
-    } else if (+value.mediaScore < 80) {
+    } else if (+value.mediaScore < 85) {
       return 'success';
     } else if (+value.mediaScore < 101) {
-      return 'success';
+      return 'favorite';
     }
     else {
       return 'medium';
@@ -206,8 +211,10 @@ export class MainPagePage implements OnInit {
 
   orderByScore(games) {
     games.sort((a, b) => {
-      if (a.mediaScore == '-') {
+      if (a.mediaScore == '--') {
         return 1;
+      } else if (b.mediaScore == '--') {
+        return -1
       }
       else {
         if (+a.mediaScore < +b.mediaScore) {
@@ -285,7 +292,8 @@ export class MainPagePage implements OnInit {
         }
       }
     )
-    console.log(this.games)
+    this.orderByScore(this.searchedGames);
+    console.log(this.searchedGames)
   }
 
   searchDirector(event: string) {
@@ -346,17 +354,50 @@ export class MainPagePage implements OnInit {
     console.log(this.publishers);
   }
 
-
-
   changeSelectSearch(selectSearch: string) {
     this.selectSearch = selectSearch;
     console.log(this.selectSearch);
   }
 
   goToGame(idGame: string) {
-    this.route.navigate(['/game', idGame]);
+    this.route.navigate(['/game', this.userLoged.id,idGame]);
   }
 
+  goToDirector(idDirector: string) {
+    this.route.navigate(['/director',this.userLoged.id, idDirector]);
+  }
 
+  goToPublisher(idPublisher: string) {
+    this.route.navigate(['/publisher',this.userLoged.id, idPublisher]);
+  }
 
+  goToDeveloper(idDeveloper: string) {
+    this.route.navigate(['/developer',this.userLoged.id, idDeveloper]);
+  }
+
+  async presentModalUsuario() {
+    const modal = await this.modalController.create({
+      component: UserComponent, componentProps: {
+        userLoged: this.userLoged
+      }
+    });
+    return await modal.present();
+  }
+
+  cargarUserLoged(){
+    if (this.activatedRoute.snapshot.paramMap.get('userLoged') == "0") {
+      this.userLoged.id = "0";
+      this.userLoged.image = "https://firebasestorage.googleapis.com/v0/b/gamescore-f0cc0.appspot.com/o/error%20403.jpg?alt=media&token=90e17733-34c2-4914-8731-e14787939e72";
+    } else {
+      this.firebaseService.getUsuario(+this.activatedRoute.snapshot.paramMap.get('userLoged')-1).subscribe(
+        (user: User) => {
+          this.userLoged = user;
+        }
+      )
+    }
+  }
+
+  goToSuggestions(){
+    this.route.navigate(['/suggestions']);
+  }
 }

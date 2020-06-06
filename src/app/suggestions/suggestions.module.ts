@@ -5,14 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { GamePage } from './game.page';
-import { ModalMediaCriticsComponent } from '../modal-media-critics/modal-media-critics.component';
-import { ModalUserCriticsComponent } from '../modal-user-critics/modal-user-critics.component';
+import { SuggestionsPage } from './suggestions.page';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 const routes: Routes = [
   {
     path: '',
-    component: GamePage
+    component: SuggestionsPage
   }
 ];
 
@@ -23,8 +22,10 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [GamePage],
-  entryComponents:[
+  declarations: [SuggestionsPage,    EmailComposer
+  ],
+  providers: [
+    EmailComposer
   ]
 })
-export class GamePageModule {}
+export class SuggestionsPageModule {}

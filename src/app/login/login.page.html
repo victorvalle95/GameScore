@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title text-center>GameScore </ion-title>
+    
+    <ion-title slot="start" class="titulo" style="margin-left: 30%;">GameScore</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,33 +13,32 @@
     </ion-item>
     <ion-item>
       <ion-label>{{'LOGIN.USER' | translate}}</ion-label>
-      <ion-input clearInput name="email" id="email" #email></ion-input>
+      <ion-input clearInput name="username" id="username" #username></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>{{'LOGIN.PASS' | translate}}</ion-label>
       <ion-input type="password" clearInput name="pass" id="pass" #pass></ion-input>
     </ion-item>
     <ion-item lines="none" text-center>
-      <ion-button style="float:left; margin: 0 auto" shape="round" fill="outline" (click)="recuperarEmailAlert()">
-        Recuperar contraseña</ion-button>
-      <ion-button style="float:left; margin: 0 auto" shape="round" fill="outline" (click)="login(email,pass)">Entrar
-      </ion-button>
-      <ion-button style="float:left; margin: 0 auto" (click)="googleAuth()">
-        <ion-icon name="logo-googleplus"></ion-icon>
-      </ion-button>
-
+      <ion-card color="tertiary" text-center style="float:left; margin: 0 auto; width: 100%;" (click)="login(username,pass)">
+        <ion-card-title>Login</ion-card-title>
+      </ion-card>
     </ion-item>
 
     <ion-card color="primary" text-center [routerLink]="['/register']">
-      <ion-card-title>¿Aún no tienes usuario? Registrate pulsando aquí</ion-card-title>
+      <ion-card-title>Don't have a user yet? Register by clicking here</ion-card-title>
     </ion-card>
-
+    <ion-card color="danger"  (click)="loginGuest()" text-center>
+      <ion-card-title>Guests access</ion-card-title>
+    </ion-card>
+    
   </ion-list>
 </ion-content>
+
 <ion-footer no-border>
   <ion-toolbar lines=none>
-    <ion-card color="danger" text-center>
-      <ion-card-title>Acceso de invitados</ion-card-title>
+    <ion-card color="tertiary" (click)="goToSuggestions()" text-center>
+      <ion-card-title>Do you have any suggestion?</ion-card-title>
     </ion-card>
   </ion-toolbar>
 </ion-footer>

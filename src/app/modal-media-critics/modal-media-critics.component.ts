@@ -1,0 +1,246 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { FirebaseService } from 'src/services/firebase.service';
+import { Critic } from '../models/critic';
+import { ModalController, AlertController, ToastController } from '@ionic/angular';
+import { User } from '../models/user';
+import { Router } from '@angular/router';
+import { Game } from '../models/game';
+
+
+@Component({
+  selector: 'app-modal-media-critics',
+  templateUrl: './modal-media-critics.component.html',
+  styleUrls: ['./modal-media-critics.component.scss'],
+})
+export class ModalMediaCriticsComponent implements OnInit {
+
+  mediaCritics: Critic[] = [];
+  addControl: boolean;
+  allCritics: Critic[] = [];
+  numberCritics: number;
+  mediaScore: string;
+
+  @Input() userLoged: User;
+
+  @Input() game: Game;
+
+
+  constructor(
+    private firebaseService: FirebaseService,
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
+    private route: Router) { }
+
+
+
+  ngOnInit() {
+    console.log(this.userLoged);
+
+    this.addControl = true;
+    this.getCriticsOfTheGame();
+
+  }
+
+  color(value) {
+    if (+value < 50) {
+      return "danger";
+    } else if (+value < 75) {
+      return "warning";
+    } else if (+value < 85) {
+      return "success";
+    } else if (+value < 101) {
+      return "favorite";
+    } else {
+      return "medium";
+    }
+  }
+
+  dismiss() {
+    // using the injected ModalController this page
+    // can "dismiss" itself and optionally pass back data
+    this.modalCtrl.dismiss({
+      'dismissed': true
+    });
+  }
+
+  async addCritic() {
+    const alert = await this.alertCtrl.create({
+      header: 'Add critic',
+      inputs: [
+        {
+          name: 'critic',
+          placeholder: 'Critic'
+        },
+        {
+          name: 'score',
+          placeholder: 'Score (0-100)'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: async (data) => {
+            console.log('Confirm Ok');
+            if (this.addControl == true) {
+              if (+data.score >= 0 && +data.score <= 100) {
+                let newCritic: Critic = new Critic();
+                newCritic.comments = data.critic;
+                newCritic.score = data.score;
+                newCritic.id_game = this.game.id;
+                newCritic.id_user = this.userLoged.id;
+                console.log(this.numberCritics);
+                this.firebaseService.saveCritic(newCritic, this.numberCritics);
+                this.mediaCritics = [];
+                this.getCriticsOfTheGame();
+
+                this.alertOK();
+              } else {
+                this.alertIncorrectScore();
+              }
+            } else {
+              this.alertAlreadyAdded();
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  goToSuggestions() {
+    this.route.navigate(['/suggestions']);
+    this.dismiss();
+  }
+
+  async editCritic(editCritic: Critic) {
+    const alert = await this.alertCtrl.create({
+      header: 'Edit crítica',
+      inputs: [
+        {
+          name: 'critic',
+          placeholder: 'Critic',
+          value: editCritic.comments
+        },
+        {
+          name: 'score',
+          placeholder: 'Score',
+          value: editCritic.score
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+            //añadir si el usuario que va a añadirlo no ha añadido aun ninguna crítica a este juego
+          }
+        }, {
+          text: 'Ok',
+          handler: async (data) => {
+            console.log('Confirm Ok');
+            let newCritic: Critic = new Critic();
+            newCritic.comments = data.critic;
+            newCritic.score = data.score;
+            newCritic.id_game = this.game.id;
+            newCritic.id_user = this.userLoged.id;
+            newCritic.id = editCritic.id;
+            console.log(this.numberCritics);
+
+            this.firebaseService.updateCritic(newCritic);
+            this.mediaCritics = [];
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  getCriticsOfTheGame() {
+    this.firebaseService.getCritics().subscribe((data: Critic[]) => {
+      console.log(data);
+      let contador = 0;
+      this.numberCritics = data.length;
+      data.forEach((critic: Critic) => {
+        contador++;
+        if (critic.id_game == this.game.id) {
+          this.allCritics.push(critic);
+        }
+      });
+
+      this.allCritics.forEach((critic2: Critic) => {
+        this.firebaseService
+          .getUsuario(+critic2.id_user - 1)
+          .subscribe((userData: User) => {
+            if (userData.id_media != "0") {
+              critic2.media = userData.username;
+              this.mediaCritics.push(critic2);
+            }
+          });
+      });
+
+      setTimeout(() => {
+        console.log(this.mediaCritics);
+
+        if (this.game.releaseDateBD != 'TBD' && this.game.releaseDate.getTime() <= Date.now()) {
+          let partialMediaScore = 0;
+          this.mediaCritics.forEach((critic: Critic) => {
+            partialMediaScore += +critic.score;
+          });
+
+          this.mediaScore =
+            "" + Math.trunc(partialMediaScore / this.mediaCritics.length);
+
+        } else {
+          this.mediaScore = "-";
+        }
+
+        this.mediaCritics.forEach(
+          (mediaCritic) => {
+            if (mediaCritic.id_user == this.userLoged.id) {
+              this.addControl = false;
+            }
+          }
+        )
+
+      }, 200);
+    });
+  }
+
+  async alertOK() {
+    const alert = await this.alertCtrl.create({
+      message: 'Critic added correctly',
+      subHeader: 'Added',
+      buttons: ['Ok']
+    });
+    await alert.present();
+  }
+
+  async alertAlreadyAdded() {
+    const alert = await this.alertCtrl.create({
+      message: 'This user have already had a critic added',
+      subHeader: 'Not added',
+      buttons: ['Ok']
+    });
+    await alert.present();
+  }
+
+  async alertIncorrectScore() {
+    const alert = await this.alertCtrl.create({
+      message: 'The score must be between 0 and 100',
+      subHeader: 'Not added',
+      buttons: ['Ok']
+    });
+    await alert.present();
+  }
+}

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo">GameScore</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-thumbnail style="margin-right: 10px; margin-top: 3px" *ngIf="userLoged.id!='0'"
+        (click)="presentModalUsuario()">
+        <img style="border-radius: 100%; " src="{{userLoged.image}}">
+      </ion-thumbnail>
+      <ion-thumbnail style="margin-right: 10px; margin-top: 27px" *ngIf="userLoged.id=='0'">
+        Guest
+      </ion-thumbnail>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <label class="label">Professional Critics</label>
+  <ion-card *ngIf="userLoged.id!='0' && userLoged.id_media!='0'" class="addCritic" color="tertiary"
+    (click)="addCritic()">Añade una crítica profesional</ion-card>
+  <ion-list>
+    <ion-item name="critics2" *ngFor="let critic of mediaCritics">
+      <p>{{ critic.comments }} - {{critic.media}} </p>
+      <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="editCritic(critic)" >
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="removeCritic()">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+      <ion-card class="score" color="{{color(critic.score)}}">
+        <p>{{critic.score}}</p>
+      </ion-card>
+
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar lines=none>
+    <ion-card color="tertiary" (click)="goToSuggestions()" text-center>
+      <ion-card-title>Do you have any suggestion?</ion-card-title>
+    </ion-card>
+  </ion-toolbar>
+</ion-footer>

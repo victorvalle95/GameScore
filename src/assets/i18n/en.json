@@ -1,13 +1,13 @@
 {
     "LOGIN": {
-        "USER":"Usuario",
-        "PASS":"Contraseña"
+        "USER":"Username",
+        "PASS":"Password"
     },
     "REGISTER":     {
-        "FIRST_NAME": "Nombre",
-        "LAST_NAME": "Apellidos",
+        "FIRST_NAME": "First name",
+        "LAST_NAME": "Last name",
         "EMAIL": "Email",
         "MEDIA_COMPANY": "",
-        "REGISTER":"Registrar"
+        "REGISTER":"Register"
     }
 }

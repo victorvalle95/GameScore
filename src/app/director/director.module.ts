@@ -5,14 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { GamePage } from './game.page';
-import { ModalMediaCriticsComponent } from '../modal-media-critics/modal-media-critics.component';
-import { ModalUserCriticsComponent } from '../modal-user-critics/modal-user-critics.component';
+import { DirectorPage } from './director.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: GamePage
+    component: DirectorPage
   }
 ];
 
@@ -23,8 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [GamePage],
-  entryComponents:[
-  ]
+  declarations: [DirectorPage]
 })
-export class GamePageModule {}
+export class DirectorPageModule {}

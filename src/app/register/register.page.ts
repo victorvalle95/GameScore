@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/services/firebase.service';
 import { User } from '../models/user';
-import { Media } from '../models/media';
 
 @Component({
   selector: 'app-register',
@@ -19,8 +18,7 @@ export class RegisterPage implements OnInit {
   successMessage: string;
   actualUser: User;
   users: User[];
-  medias: Media[];
-  controlMedia: boolean = false;
+  //medias: Media[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,16 +33,16 @@ export class RegisterPage implements OnInit {
     this.registerForm = this.formBuilder.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
-      email: ['', Validators.required],
-      media_company: [''],
-      tlf: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      id_media: ['0'],
+      tlf: ['', Validators.compose([Validators.required, Validators.pattern('[0-9 ]*'),Validators.minLength(9),Validators.maxLength(9)])],
       username: ['', Validators.required],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      password: ['', Validators.compose([Validators.required,Validators.minLength(6)])],
     })
   }
 
   ngOnInit() {
-    this.menuCtrl.enable(false);
+    //this.menuCtrl.enable(false);
 
     this.firebase.getUsuarios().subscribe(
       (data: User[]) => {
@@ -53,32 +51,15 @@ export class RegisterPage implements OnInit {
 
   }
 
-  mediaExists(value) {
-    console.log(this.registerForm.controls['media_company'].value);
-    this.firebase.getMedia().subscribe(
-      (data: Media[]) => {
-        this.medias = data;
-        this.controlMedia = false;
-        this.medias.forEach(
-          (media) => {
-            if (this.controlMedia === false) {
-              if (media.name == this.registerForm.controls['media_company'].value) {
-                this.errorMessage = "Media existe";
-                this.successMessage = "";
-                this.controlMedia = true;
-                this.presentToast(this.errorMessage);
-              }
-            }
-          }
-        );
+  adjudicarMedia() {
+    console.log(this.registerForm.get("id_media").value);
 
-        if (this.controlMedia === false) {
-          this.errorMessage = "Media no existe";
-          this.successMessage = "";
-          this.presentToast(this.errorMessage);
-        }
+    this.users.forEach((user:User) => {
+      if(+this.registerForm.get("id_media").value<=+user.id_media){
+        this.registerForm.get("id_media").setValue(+user.id_media+1);
       }
-    )
+      
+    });
   }
 
   register(value) {
@@ -96,6 +77,7 @@ export class RegisterPage implements OnInit {
           text: 'OK',
           handler: (data) => {
             this.router.navigate(['/login']);
+            this.actualUser.image="https://firebasestorage.googleapis.com/v0/b/gamescore-c3aef.appspot.com/o/user-png-icon-male-user-icon-512.png?alt=media&token=caabdb80-340c-4ccf-92ed-461cf5faad24";
             this.firebase.saveUsuario(this.actualUser, this.users.length);
             this.registerForm.reset();
 
@@ -115,21 +97,8 @@ export class RegisterPage implements OnInit {
     toast.present();
   }
 
-  controlarMedia() {
-    if (this.controlMedia == true) {
-      return true;
-    } else {
-      if (this.registerForm.controls['media_company'].value == '') {
-        return true
-      }
-      else {
-        return false;
-      }
-    }
-  }
-
-  changeControlMedia() {
-    this.controlMedia = false;
+  cleanMedia(){
+    this.registerForm.get("id_media").setValue("0");
   }
 
 }

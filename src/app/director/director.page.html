@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+
+    </ion-buttons>
+    <ion-title class="titulo">GameScore</ion-title>
+    <ion-buttons slot="end">
+      <ion-thumbnail style="margin-right: 10px; margin-top: 3px" *ngIf="userLoged.id!='0'"
+        (click)="presentModalUsuario()">
+        <img style="border-radius: 100%; " src="{{userLoged.image}}">
+      </ion-thumbnail>
+      <ion-thumbnail style="margin-right: 10px; margin-top: 27px" *ngIf="userLoged.id=='0'">
+        Guest
+      </ion-thumbnail>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="texto">{{director.name}}</div>
+  <div class="imagen">
+    <img src="{{director.image}}">
+  </div>
+  <div class="datosVarios" style="position: relative; float:right">
+    <ion-card>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            Works for: <a (click)="goToDeveloper()">{{this.developer.name}}</a>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Country: {{director.country}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Birthdate: {{director.birthdate}}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="director.twitter !=''">
+          <ion-col>
+            Twitter: <a href="{{twitter}}">{{this.director.twitter}}</a>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+  <div class="gamesRelationed">
+    <ion-card>
+      <p>Games relationed with {{director.name}}</p>
+      <ion-list>
+        <ion-item (click)="goToGame(game.id)" name="list" color="{{color(game)}}" *ngFor="let game of games">
+          {{ game.name }} -
+          {{game.releaseDateText}} <h3 slot="end">{{game.mediaScore}}</h3>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar lines=none>
+    <ion-card color="tertiary" (click)="goToSuggestions()" text-center>
+      <ion-card-title>Do you have any suggestion?</ion-card-title>
+    </ion-card>
+  </ion-toolbar>
+</ion-footer>

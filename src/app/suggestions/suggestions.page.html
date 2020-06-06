@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo" text-center>GameScore</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div>
+    <ion-card class="content">
+      <p>Send suggestions that you want. These will be checked by an administrator</p>
+      <ion-textarea class="input" [(ngModel)]="emailTxt" id="emailTxt" name="emailTxt"></ion-textarea>
+      <ion-button href="mailto:proyectodam_victorvalle@iesjulioverne.es?subject=Sugerencia%20Gamescore&body={{emailTxt}}">Send</ion-button>
+    </ion-card>
+  </div>
+</ion-content>

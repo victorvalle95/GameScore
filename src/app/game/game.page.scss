@@ -1,20 +1,25 @@
 @import "../../general.css";
 
+.titulo {
+  position: relative;
+  left: 20%;
+}
+
 .imagen {
   position: relative;
   float: left;
   margin-left: 10px;
   margin-right: 15px;
-  width: 40%;
+  width: 42%;
   height: 30%;
   top: 10px;
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .userScore {
   position: relative;
   float: left;
-  top: 10px;
+  top: 30px;
   height: 60px;
   width: 20%;
   left: 5%;
@@ -31,8 +36,9 @@
   position: relative;
   text-align: center;
   border-radius: 100px;
+  left: 10%;
   align-content: center;
-  width: 100%;
+  width: 80%;
   height: 100%;
 }
 
@@ -47,7 +53,7 @@
 .mediaScore {
   position: relative;
   float: left;
-  top: 10px;
+  top: 30px;
   width: 20%;
   height: 60px;
 }
@@ -56,7 +62,7 @@
   position: relative;
   font-size: 10px;
   width: 100%;
-  left: 25%;
+  left: 23%;
 }
 
 .mediaScore ion-card {
@@ -64,7 +70,8 @@
   text-align: center;
   border-radius: 90%;
   align-content: center;
-  width: 100%;
+  left: 10%;
+  width: 80%;
   height: 100%;
 }
 .mediaScore p {
@@ -75,30 +82,75 @@
     1px 1px 0 #000;
 }
 
-.critics{
+.critics {
   position: absolute;
-  left:5px;
-  top: 25%;
-  margin-top:2%;
-  width:100%;
+  left: 5px;
+  top: 28%;
+  margin-top: 3%;
+  width: 100%;
   text-align: center;
 }
 
-.critics p{
-  width:80%;
+.critics p {
+  position: relative;
+  margin-top: 5px;
+  width: 80%;
 }
 
-.critics ion-card{
-  width:20%;
+.critics .score {
+  width: 15%;
   text-align: center;
   align-content: center;
+  border-radius: 10%;
+  padding: 1px 1px 1px 1px;
+  left: 2%;
+  position: relative;
 }
 
-.critics ion-card p {
+.critics .score p {
   position: relative;
+  top: 2%;
   left: 10%;
   color: white;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
 }
 
+.foro {
+  position: relative;
+  font-size: large;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.datosVarios {
+  width: 90% !important;
+  text-align: center;
+}
+
+.datosVarios label {
+  margin-bottom: 2%;
+  margin-left: -22%;
+}
+
+.datos1 {
+  position: relative;
+  float: left;
+  margin-top: 5%;
+  margin-left: 3%;
+  align-content: center;
+}
+
+.datos2 {
+  float: left;
+  margin-left: 10%;
+  margin-top: 5%;
+  align-content: center;
+}
+
+.screenshots {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+}

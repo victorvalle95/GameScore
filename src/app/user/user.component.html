@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo" text-center>GameScore</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div align="center">
+    <img style="height:100px" src="{{userLoged.image}}">
+    <ion-card class="datosVarios">
+      <ion-grid>
+        <ion-row>
+          <ion-col align="center">Details of the user</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Username: {{this.userLoged.username}}
+          </ion-col>
+          <ion-col *ngIf="userLoged.id_media!=0">
+            *Medio Profesional*
+          </ion-col>
+          <ion-col *ngIf="userLoged.id_media==0">
+            *Usuario comun*
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            First Name: {{this.userLoged.first_name}}
+          </ion-col>
+          <ion-col>
+            Last Name: {{this.userLoged.last_name}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            Email: {{this.userLoged.email}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+    <ion-card color="tertiary" style="font-size: large;" (click)="logout()">Logout</ion-card>
+  </div>
+</ion-content>

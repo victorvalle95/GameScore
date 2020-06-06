@@ -4,6 +4,7 @@ import { Observable } from "rxjs-compat";
 import { User } from "src/app/models/user";
 import { Game } from "src/app/models/game";
 import { Critic } from "src/app/models/critic";
+import { Genre } from 'src/app/models/genre';
 
 @Injectable({
   providedIn: "root",
@@ -21,7 +22,7 @@ export class FirebaseService {
     //Esta función devolverá todos los datos que tengamos en el apartado usuarios, en nuestra base de datos
   }
   public saveUsuario(user: User, length) {
-    user.id = length;
+    user.id = length+1;
     this.afDB.database.ref("users/" + user.id).set(user);
   }
   public updateUsuario(usuario) {
@@ -48,7 +49,7 @@ export class FirebaseService {
     this.afDB.database.ref("games/" + usuario.id).set(usuario);
   }
   public getGame(id) {
-    return this.afDB.object("games/" + (id - 1)).valueChanges();
+    return this.afDB.object("games/" + (id)).valueChanges();
   }
   public removeGame(id) {
     this.afDB.database.ref("games/" + id).remove();
@@ -58,11 +59,11 @@ export class FirebaseService {
     return this.afDB.list("critics/").valueChanges();
   }
   public saveCritic(critic: Critic, length) {
-    critic.id = length;
+    critic.id = ""+length;
     this.afDB.database.ref("critics/" + critic.id).set(critic);
   }
-  public updateCritic(usuario) {
-    this.afDB.database.ref("critics/" + usuario.id).set(usuario);
+  public updateCritic(critic) {
+    this.afDB.database.ref("critics/" + critic.id).set(critic);
   }
   public getCritic(id) {
     return this.afDB.object("critics/" + id).valueChanges();
@@ -133,7 +134,20 @@ export class FirebaseService {
     this.afDB.database.ref("publishers/" + id).remove();
   }
 
-  public getMedia() {
-    return this.afDB.list("media_companies/").valueChanges();
+  public getGenres() {
+    return this.afDB.list("genres/").valueChanges();
+  }
+  public saveGenre(genre: Genre, length) {
+    genre.id = length;
+    this.afDB.database.ref("genres/" + genre.id).set(genre);
+  }
+  public updateGenre(genre) {
+    this.afDB.database.ref("genres/" + genre.id).set(genre);
+  }
+  public getGenre(id) {
+    return this.afDB.object("genres/" + id).valueChanges();
+  }
+  public removeGenre(id) {
+    this.afDB.database.ref("genres/" + id).remove();
   }
 }

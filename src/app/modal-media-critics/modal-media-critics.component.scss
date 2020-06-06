@@ -1,0 +1,58 @@
+@import "../../general.css";
+
+ion-list {
+    position: relative;
+    top:5%;
+}
+
+.titulo {
+  position: relative;
+  left: 20%;
+}
+
+.label{
+    top: 20px;
+    position: absolute;
+    left:30%;
+    z-index: 20;
+}
+
+p {
+  position: relative;
+  top: 10px;
+  width: 80%;
+}
+
+.score {
+  width: 15%;
+  text-align: center;
+  align-content: center;
+  border-radius: 10%;
+  padding: 1px 1px 1px 1px;
+  left: 2%;
+  position: relative;
+}
+
+.score p {
+  position: relative;
+  top: 2%;
+  left: 10%;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.addCritic {
+  position: relative;
+  z-index: 12;
+  top:8%;
+  font-size: large;
+  align-content: center;
+  text-align: center;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.critics2 {
+  margin-top:30px
+}

@@ -15,24 +15,54 @@ const routes: Routes = [
     loadChildren: './login/login.module#LoginPageModule'
   },
 
-  { 
-    path: 'register', 
-    loadChildren: './register/register.module#RegisterPageModule' 
-  },
-  { 
-    path: 'main-page', 
-    loadChildren: './main-page/main-page.module#MainPagePageModule' 
-  },
-  { 
-    path: 'game', 
-    loadChildren: './game/game.module#GamePageModule' 
+  {
+    path: 'register',
+    loadChildren: './register/register.module#RegisterPageModule'
   },
   {
-    path: 'game/:idGame',
+    path: 'main-page',
+    loadChildren: './main-page/main-page.module#MainPagePageModule'
+  },
+  {
+    path: 'main-page/:userLoged',
+    loadChildren: './main-page/main-page.module#MainPagePageModule'
+  },
+  {
+    path: 'game',
     loadChildren: './game/game.module#GamePageModule'
-  }
-
-
+  },
+  {
+    path: 'game/:userLoged/:idGame',
+    loadChildren: './game/game.module#GamePageModule'
+  },
+  {
+    path: 'director',
+    loadChildren: './director/director.module#DirectorPageModule'
+  },
+  {
+    path: 'director/:userLoged/:idDirector',
+    loadChildren: './director/director.module#DirectorPageModule'
+  },
+  {
+    path: 'developer',
+    loadChildren: './developer/developer.module#DeveloperPageModule'
+  },
+  {
+    path: 'developer/:userLoged/:idDeveloper',
+    loadChildren: './developer/developer.module#DeveloperPageModule'
+  },
+  { 
+    path: 'publisher',
+    loadChildren: './publisher/publisher.module#PublisherPageModule' 
+  },
+  { 
+    path: 'publisher/:userLoged/:idPublisher',
+    loadChildren: './publisher/publisher.module#PublisherPageModule' 
+  },
+  { 
+    path: 'suggestions', 
+    loadChildren: './suggestions/suggestions.module#SuggestionsPageModule' 
+  },
 
 ];
 

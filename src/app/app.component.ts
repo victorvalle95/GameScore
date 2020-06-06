@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { TranslateService } from '@ngx-translate/core';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +13,16 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent {
   public appPages = [
     {
-      icon: 'home',
-      title: 'Login',
-      url: '/login'
+      title: 'Home',
+      url: '/main-page'
     },
     {
-      icon: 'home',
-      title: 'Register',
-      url: '/register'
+      title: 'Suggestions',
+      url: '/suggestions'
+    },
+    {
+      title: 'Logout',
+      url: '/login'
     }
   ];
 
@@ -30,10 +33,14 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private translate: TranslateService,
+    private screenOrientation: ScreenOrientation,
+    private menuController: MenuController
 
   ) {
     this.initializeApp();
     this.translate.setDefaultLang(this.activeLang);
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    this.menuController.enable(false);
 
   }
 
