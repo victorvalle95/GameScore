@@ -179,10 +179,9 @@ export class GamePage implements OnInit {
   async presentModalUserCritic() {
     const modal = await this.modalController.create({
       component: ModalUserCriticsComponent, componentProps: {
-        userCritics: this.userCritics,
         userLoged: this.userLoged,
         numberCritics: this.numberCritics,
-        idGame: this.game.id
+        game: this.game
       }
     });
     return await modal.present();
@@ -204,15 +203,15 @@ export class GamePage implements OnInit {
   }
 
   goToDirector(){
-    this.route.navigate(['/director', this.director.id]);
+    this.route.navigate(['/director', this.userLoged.id, this.director.id]);
   }
 
   goToPublisher(){
-    this.route.navigate(['/publisher', this.publisher.id]);
+    this.route.navigate(['/publisher', this.userLoged.id, this.publisher.id]);
   }
   
   goToDeveloper(){
-    this.route.navigate(['/developer', this.developer.id]);
+    this.route.navigate(['/developer', this.userLoged.id, this.developer.id]);
   }
 
   cargarUserLoged(){

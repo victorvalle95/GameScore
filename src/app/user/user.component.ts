@@ -24,7 +24,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     console.log(this.userLoged);
   }
-  
+
   dismiss() {
     // using the injected ModalController this page
     // can "dismiss" itself and optionally pass back data
@@ -33,8 +33,12 @@ export class UserComponent implements OnInit {
     });
   }
 
-  logout(){
+  logout() {
     this.route.navigate(['/login']);
     this.dismiss();
+    setTimeout(() => {
+      window.location.reload();
+    },50)
+
   }
 }

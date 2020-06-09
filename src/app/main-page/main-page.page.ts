@@ -21,6 +21,8 @@ export class MainPagePage implements OnInit {
   paramUserLoged: string;
   userLoged: User = new User();
 
+  searchBar: string;
+
   games: Game[] = []; // Todos los juegos
   upcomingGames: Game[] = []; // Juegos que aún no han salido
   actualYearGames: Game[] = []; //Juegos del año en curso

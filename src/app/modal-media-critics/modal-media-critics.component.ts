@@ -96,11 +96,8 @@ export class ModalMediaCriticsComponent implements OnInit {
                 newCritic.id_game = this.game.id;
                 newCritic.id_user = this.userLoged.id;
                 console.log(this.numberCritics);
-                this.firebaseService.saveCritic(newCritic, this.numberCritics);
-                this.mediaCritics = [];
-                this.getCriticsOfTheGame();
 
-                this.alertOK();
+                this.alertOK('added');
               } else {
                 this.alertIncorrectScore();
               }
@@ -157,13 +154,18 @@ export class ModalMediaCriticsComponent implements OnInit {
             console.log(this.numberCritics);
 
             this.firebaseService.updateCritic(newCritic);
-            this.mediaCritics = [];
+            this.alertOK('edited');
           }
         }
       ]
     });
 
     await alert.present();
+  }
+
+  removeCritic(critic: Critic){
+    this.firebaseService.removeCritic(critic.id);
+    this.alertOK("removed");
   }
 
   getCriticsOfTheGame() {
@@ -217,11 +219,19 @@ export class ModalMediaCriticsComponent implements OnInit {
     });
   }
 
-  async alertOK() {
+  async alertOK(txt) {
     const alert = await this.alertCtrl.create({
-      message: 'Critic added correctly',
+      message: 'Critic '+txt+' correctly. Now the application will be reload',
       subHeader: 'Added',
-      buttons: ['Ok']
+      buttons: [
+        {
+          text: 'Ok',
+          handler: async (data) => {
+            console.log('Confirm Ok');
+            window.location.reload();
+          }
+        }
+      ]
     });
     await alert.present();
   }
@@ -243,4 +253,6 @@ export class ModalMediaCriticsComponent implements OnInit {
     });
     await alert.present();
   }
+
+
 }

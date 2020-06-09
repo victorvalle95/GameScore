@@ -106,7 +106,7 @@ export class PublisherPage implements OnInit {
   }
 
   goToGame(idGame: string) {
-    this.route.navigate(['/game',this.userLoged,idGame, idGame]);
+    this.route.navigate(['/game',this.userLoged.id, idGame]);
   }
 
   cargarUserLoged(){

@@ -28,7 +28,7 @@
       <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="editCritic(critic)" >
         <ion-icon name="create"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="removeCritic()">
+      <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="removeCritic(critic)">
         <ion-icon name="trash"></ion-icon>
       </ion-button>
       <ion-card class="score" color="{{color(critic.score)}}">

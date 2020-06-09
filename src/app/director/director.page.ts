@@ -116,11 +116,11 @@ export class DirectorPage implements OnInit {
   }
 
   goToDeveloper() {
-    this.route.navigate(['/developer', this.developer.id]);
+    this.route.navigate(['/developer', this.userLoged.id, this.developer.id]);
   }
 
   goToGame(idGame: string) {
-    this.route.navigate(['/game', idGame]);
+    this.route.navigate(['/game', this.userLoged.id, idGame]);
   }
 
   orderByScore(games) {

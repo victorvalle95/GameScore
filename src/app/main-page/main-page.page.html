@@ -64,7 +64,7 @@
         <ion-select-option value="publishers">Publishers</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-searchbar animated (ionChange)="search($event)"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchBar" animated (ionChange)="search($event)"></ion-searchbar>
 
     <ion-list *ngIf="selectSearch=='games'">
       <ion-item (click)="goToGame(game.id)" name="list" color="{{color(game)}}" *ngFor="let game of searchedGames">
@@ -74,19 +74,19 @@
     </ion-list>
 
     <ion-list *ngIf="selectSearch=='directors'">
-      <ion-item (click)="goToDirector(director.id)" name="list2" *ngFor="let director of searchedDirectors">
+      <ion-item color="favorite" style="border: 1px white solid;" (click)="goToDirector(director.id)" name="list2" *ngFor="let director of searchedDirectors">
         {{ director.name }}
       </ion-item>
     </ion-list>
 
     <ion-list *ngIf="selectSearch=='developers'">
-      <ion-item (click)="goToDeveloper(developer.id)" name="list3" *ngFor="let developer of searchedDevelopers">
+      <ion-item color ="secondary" style="border: 1px white solid;"  (click)="goToDeveloper(developer.id)" name="list3" *ngFor="let developer of searchedDevelopers">
         {{ developer.name }}
       </ion-item>
     </ion-list>
 
     <ion-list *ngIf="selectSearch=='publishers'">
-      <ion-item (click)="goToPublisher(publisher.id)" name="list4" *ngFor="let publisher of searchedPublishers">
+      <ion-item  color="primary" style="border: 1px white solid;"  (click)="goToPublisher(publisher.id)" name="list4" *ngFor="let publisher of searchedPublishers">
         {{ publisher.name }}
       </ion-item>
     </ion-list>

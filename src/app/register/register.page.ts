@@ -79,7 +79,6 @@ export class RegisterPage implements OnInit {
             this.router.navigate(['/login']);
             this.actualUser.image="https://firebasestorage.googleapis.com/v0/b/gamescore-c3aef.appspot.com/o/user-png-icon-male-user-icon-512.png?alt=media&token=caabdb80-340c-4ccf-92ed-461cf5faad24";
             this.firebase.saveUsuario(this.actualUser, this.users.length);
-            this.registerForm.reset();
 
           }
         }

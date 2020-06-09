@@ -62,7 +62,7 @@ const routes: Routes = [
   { 
     path: 'suggestions', 
     loadChildren: './suggestions/suggestions.module#SuggestionsPageModule' 
-  },
+  }
 
 ];
 

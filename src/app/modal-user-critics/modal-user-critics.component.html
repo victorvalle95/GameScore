@@ -17,10 +17,17 @@
 
 <ion-content>
   <label class="label">User Critics</label>
-  <ion-card *ngIf="userLoged.id!='0' || userLoged.id_media=='0'" class="addCritic" color="tertiary" (click)="presentAlertPrompt()">Añade una crítica personal</ion-card>
+  <ion-card *ngIf="userLoged.id!='0' && userLoged.id_media=='0'" class="addCritic" color="tertiary" (click)="addCritic()">Añade una crítica personal</ion-card>
   <ion-list >
     <ion-item name="critics2" *ngFor="let critic of userCritics">
-      <p>{{ critic.comments }}  {{critic.media}} </p>
+      
+      <p>{{ critic.comments }} - {{critic.media}} </p>
+      <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="editCritic(critic)" >
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="critic.id_user==userLoged.id" color="dark" (click)="removeCritic(critic)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
       <ion-card class="score" color="{{color(critic.score)}}">
         <p>{{critic.score}}</p>
       </ion-card>
