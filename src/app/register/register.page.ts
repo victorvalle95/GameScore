@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { AuthFirebaseService } from '../providers/auth/auth-firebase.service';
 import { AlertController, ToastController, MenuController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FirebaseService } from 'src/services/firebase.service';
 import { User } from '../models/user';
 
@@ -28,21 +28,20 @@ export class RegisterPage implements OnInit {
     public firebase: FirebaseService,
     public toastController: ToastController,
     private menuCtrl: MenuController,
-
     public router: Router) {
     this.registerForm = this.formBuilder.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       id_media: ['0'],
-      tlf: ['', Validators.compose([Validators.required, Validators.pattern('[0-9 ]*'),Validators.minLength(9),Validators.maxLength(9)])],
+      tlf: ['', Validators.compose([Validators.required, Validators.pattern('[0-9 ]*'), Validators.minLength(9), Validators.maxLength(9)])],
       username: ['', Validators.required],
-      password: ['', Validators.compose([Validators.required,Validators.minLength(6)])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     })
   }
 
   ngOnInit() {
-    //this.menuCtrl.enable(false);
+    this.menuCtrl.enable(false);
 
     this.firebase.getUsuarios().subscribe(
       (data: User[]) => {
@@ -54,17 +53,27 @@ export class RegisterPage implements OnInit {
   adjudicarMedia() {
     console.log(this.registerForm.get("id_media").value);
 
-    this.users.forEach((user:User) => {
-      if(+this.registerForm.get("id_media").value<=+user.id_media){
-        this.registerForm.get("id_media").setValue(+user.id_media+1);
+    this.users.forEach((user: User) => {
+      if (+this.registerForm.get("id_media").value <= +user.id_media) {
+        this.registerForm.get("id_media").setValue(+user.id_media + 1);
       }
-      
+
     });
   }
 
   register(value) {
     this.actualUser = value;
-    this.presentAlert();
+    let control = false;
+    this.users.forEach((user: User) => {
+      if (user.username == this.actualUser.username) {
+        control = true;
+      }
+    });
+    if (control) {
+      this.alertAlreadyAdded();
+    } else {
+      this.presentAlert();
+    }
   }
 
   async presentAlert() {
@@ -76,9 +85,12 @@ export class RegisterPage implements OnInit {
         {
           text: 'OK',
           handler: (data) => {
+
             this.router.navigate(['/login']);
-            this.actualUser.image="https://firebasestorage.googleapis.com/v0/b/gamescore-c3aef.appspot.com/o/user-png-icon-male-user-icon-512.png?alt=media&token=caabdb80-340c-4ccf-92ed-461cf5faad24";
+            this.actualUser.image = "https://firebasestorage.googleapis.com/v0/b/gamescore-c3aef.appspot.com/o/user-png-icon-male-user-icon-512.png?alt=media&token=caabdb80-340c-4ccf-92ed-461cf5faad24";
             this.firebase.saveUsuario(this.actualUser, this.users.length);
+            this.registerForm.reset;
+
 
           }
         }
@@ -88,16 +100,21 @@ export class RegisterPage implements OnInit {
     await alert.present();
   }
 
-  async presentToast(message) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000
+  async alertAlreadyAdded() {
+    const alert = await this.alertController.create({
+      message: 'The username is duplicated',
+      subHeader: 'Not registered',
+      buttons: ['Ok']
     });
-    toast.present();
+    await alert.present();
   }
 
-  cleanMedia(){
+  cleanMedia() {
     this.registerForm.get("id_media").setValue("0");
+  }
+
+  goToSuggestions(){
+    this.router.navigate(['/suggestions']);
   }
 
 }

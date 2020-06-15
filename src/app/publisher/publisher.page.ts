@@ -6,6 +6,8 @@ import { FirebaseService } from 'src/services/firebase.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Publisher } from '../models/publisher';
 import { User } from '../models/user';
+import { UserComponent } from '../user/user.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-publisher',
@@ -23,7 +25,9 @@ export class PublisherPage implements OnInit {
   constructor(
     private firebaseService: FirebaseService,
     private activatedRoute: ActivatedRoute,
-    private route: Router) { }
+    private route: Router,
+    public modalController: ModalController,
+    ) { }
 
   ngOnInit() {
     this.firebaseService.getPublisher(+this.activatedRoute.snapshot.paramMap.get("idPublisher") - 1).subscribe(
@@ -34,8 +38,16 @@ export class PublisherPage implements OnInit {
             gamesData.forEach(
               (game: Game) => {
                 if (game.id_publisher == this.publisher.id) {
-                  this.games.push(game);
-                  this.firebaseService.getCritics().subscribe((data2: Critic[]) => {
+                  let control = true;
+                  this.games.forEach((game2) => {
+                    if (game2.id == game.id) {
+                      control = false;
+                    }
+                  });
+
+                  if (control == true) {
+                    this.games.push(game);
+                  }                  this.firebaseService.getCritics().subscribe((data2: Critic[]) => {
                     this.critics = data2;
                     gamesData.forEach((game: Game) => {
                       //de momento supondremos que todos los usuarios sean media
@@ -86,7 +98,7 @@ export class PublisherPage implements OnInit {
 
   textDate(date: Date) {
     //Asi es como se mostrará en la lista el tiempo que le queda para salir
-    return date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' });
+    return date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' }) +' '+ date.toLocaleString('default', {year: 'numeric'});
   }
 
 
@@ -124,6 +136,15 @@ export class PublisherPage implements OnInit {
 
   goToSuggestions(){
     this.route.navigate(['/suggestions']);
+  }
+
+  async presentModalUsuario() {
+    const modal = await this.modalController.create({
+      component: UserComponent, componentProps: {
+        userLoged: this.userLoged
+      }
+    });
+    return await modal.present();
   }
 
 }

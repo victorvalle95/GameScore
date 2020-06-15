@@ -5,6 +5,7 @@ import { ModalController, AlertController, ToastController } from '@ionic/angula
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { Game } from '../models/game';
+import { UserComponent } from '../user/user.component';
 
 
 @Component({
@@ -29,7 +30,9 @@ export class ModalMediaCriticsComponent implements OnInit {
     private firebaseService: FirebaseService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
-    private route: Router) { }
+    private route: Router,
+    public modalController: ModalController,
+    ) { }
 
 
 
@@ -96,6 +99,8 @@ export class ModalMediaCriticsComponent implements OnInit {
                 newCritic.id_game = this.game.id;
                 newCritic.id_user = this.userLoged.id;
                 console.log(this.numberCritics);
+                this.firebaseService.saveCritic(newCritic, this.numberCritics);
+
 
                 this.alertOK('added');
               } else {
@@ -252,6 +257,15 @@ export class ModalMediaCriticsComponent implements OnInit {
       buttons: ['Ok']
     });
     await alert.present();
+  }
+
+  async presentModalUsuario() {
+    const modal = await this.modalController.create({
+      component: UserComponent, componentProps: {
+        userLoged: this.userLoged
+      }
+    });
+    return await modal.present();
   }
 
 

@@ -4,7 +4,7 @@ import { Game } from "../models/game";
 import { FirebaseService } from "src/services/firebase.service";
 import { Critic } from "../models/critic";
 import { User } from "../models/user";
-import { MenuController } from '@ionic/angular';
+import { MenuController, AlertController } from '@ionic/angular';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import { Director } from '../models/director';
 import { Publisher } from '../models/publisher';
@@ -33,6 +33,12 @@ export class GamePage implements OnInit {
   director: Director = new Director();
   genres: string = "";
 
+  slideOptsOne = {
+    initialSlide: 0,
+    slidesPerView: 1,
+    autoplay: true
+  };
+
   numberCritics: number;
 
   userLoged: User = new User();
@@ -43,6 +49,7 @@ export class GamePage implements OnInit {
     private youtube: YoutubeVideoPlayer,
     public modalController: ModalController,
     public route: Router,
+    public alertCtrl: AlertController
 
   ) {
     this.game = new Game();
@@ -50,11 +57,10 @@ export class GamePage implements OnInit {
 
   ngOnInit() {
     this.firebaseService
-      .getGame(+this.activatedRoute.snapshot.paramMap.get("idGame")-1)
+      .getGame(+this.activatedRoute.snapshot.paramMap.get("idGame") - 1)
       .subscribe((dataGame: Game) => {
         this.game = dataGame;
         this.game.releaseDate = new Date(this.game.releaseDateBD);
-        this.screenshots = this.game.screenshots.split(',');
         console.log(this.screenshots);
 
         console.log(this.activatedRoute.snapshot.paramMap.get("userLoged"));
@@ -109,7 +115,9 @@ export class GamePage implements OnInit {
           this.mediaScore = "-";
         }
 
-      }, 200);
+        this.screenshots = this.game.screenshots.split(',');
+
+      }, 1000);
     });
   }
 
@@ -133,7 +141,7 @@ export class GamePage implements OnInit {
                     }
                   );
                 });
-                this.genres.substr(0, this.genres.length-1);
+                this.genres.substr(0, this.genres.length - 1);
               }
             );
           }
@@ -202,24 +210,29 @@ export class GamePage implements OnInit {
     return await modal.present();
   }
 
-  goToDirector(){
+  goToDirector() {
     this.route.navigate(['/director', this.userLoged.id, this.director.id]);
   }
 
-  goToPublisher(){
+  goToPublisher() {
     this.route.navigate(['/publisher', this.userLoged.id, this.publisher.id]);
   }
-  
-  goToDeveloper(){
+
+  goToDeveloper() {
     this.route.navigate(['/developer', this.userLoged.id, this.developer.id]);
   }
 
-  cargarUserLoged(){
+  volverHome() {
+    this.route.navigate(['/main-page', this.userLoged.id]);
+  }
+
+
+  cargarUserLoged() {
     if (this.activatedRoute.snapshot.paramMap.get('userLoged') == "0") {
       this.userLoged.id = "0";
       this.userLoged.image = "https://firebasestorage.googleapis.com/v0/b/gamescore-f0cc0.appspot.com/o/error%20403.jpg?alt=media&token=90e17733-34c2-4914-8731-e14787939e72";
     } else {
-      this.firebaseService.getUsuario(+this.activatedRoute.snapshot.paramMap.get('userLoged')-1).subscribe(
+      this.firebaseService.getUsuario(+this.activatedRoute.snapshot.paramMap.get('userLoged') - 1).subscribe(
         (user: User) => {
           this.userLoged = user;
         }
@@ -237,8 +250,18 @@ export class GamePage implements OnInit {
     return await modal.present();
   }
 
-  goToSuggestions(){
+  goToSuggestions() {
     this.route.navigate(['/suggestions']);
+  }
+
+  async openImage(s: string) {
+    const alert = await this.alertCtrl.create({
+      message: '<img src="'+s+'" alt="g-maps" style="border-radius: 2px">',
+      buttons: ['Ok']
+    });
+    await alert.present();
+
+
   }
 }
 

@@ -23,7 +23,7 @@ export class FirebaseService {
   }
   public saveUsuario(user: User, length) {
     user.id = length+1;
-    this.afDB.database.ref("users/" + user.id).set(user);
+    this.afDB.database.ref("users/" + (length)).set(user);
   }
   public updateUsuario(usuario) {
     //Actualizamos la fruta con el id que recibimos del objeto del parametro

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="toolbar">
     <ion-buttons slot="start">
     </ion-buttons>
     <ion-title slot="start" class="titulo" style="margin-left: 30%;">GameScore</ion-title>
@@ -67,14 +67,14 @@
     <ion-searchbar [(ngModel)]="searchBar" animated (ionChange)="search($event)"></ion-searchbar>
 
     <ion-list *ngIf="selectSearch=='games'">
-      <ion-item (click)="goToGame(game.id)" name="list" color="{{color(game)}}" *ngFor="let game of searchedGames">
+      <ion-item (click)="goToGame(game.id)" name="list" color="{{color(game)}}" *ngFor="let game of searchedGames"> 
         {{ game.name }} -
         {{game.releaseDateText}} <h3 slot="end">{{game.mediaScore}}</h3>
       </ion-item>
     </ion-list>
 
     <ion-list *ngIf="selectSearch=='directors'">
-      <ion-item color="favorite" style="border: 1px white solid;" (click)="goToDirector(director.id)" name="list2" *ngFor="let director of searchedDirectors">
+      <ion-item color="four" style="border: 1px white solid;" (click)="goToDirector(director.id)" name="list2" *ngFor="let director of searchedDirectors">
         {{ director.name }}
       </ion-item>
     </ion-list>

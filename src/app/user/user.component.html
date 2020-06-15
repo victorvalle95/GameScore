@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="toolbar">
     <ion-title class="titulo" text-center>GameScore</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
@@ -46,3 +46,11 @@
     <ion-card color="tertiary" style="font-size: large;" (click)="logout()">Logout</ion-card>
   </div>
 </ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar lines=none>
+    <ion-card color="tertiary" (click)="goToSuggestions()" text-center>
+      <ion-card-title>Do you have any suggestion?</ion-card-title>
+    </ion-card>
+  </ion-toolbar>
+</ion-footer>

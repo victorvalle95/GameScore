@@ -51,13 +51,15 @@ export class MainPagePage implements OnInit {
     public firebaseService: FirebaseService,
     public route: Router,
     public activatedRoute: ActivatedRoute,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public menuController: MenuController
   ) {
   }
 
   ngOnInit() {
     this.cargarDatosEnCascada();
     this.cargarUserLoged();
+    this.menuController.enable(true);
 
   }
 
@@ -104,7 +106,17 @@ export class MainPagePage implements OnInit {
 
             this.actualUpcomingDivision(game);
 
-            this.games.push(game);
+
+            let control = true;
+            this.games.forEach((game2) => {
+              if (game2.id == game.id) {
+                control = false;
+              }
+            });
+
+            if (control == true) {
+              this.games.push(game);
+            }
           }
             , 1000);
         });
@@ -169,16 +181,35 @@ export class MainPagePage implements OnInit {
 
   textDate(date: Date) {
     //Asi es como se mostrará en la lista el tiempo que le queda para salir
-    return date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' });
+    return date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' }) + ' ' + date.toLocaleString('default', { year: 'numeric' });
   }
 
   actualUpcomingDivision(game: Game) {
     if (game.releaseDateBD == "TBD" || game.releaseDate.getTime() > Date.now()) {
-      this.upcomingGames.push(game);
+      let control = true;
+      this.upcomingGames.forEach((game2) => {
+        if (game2.id == game.id) {
+          control = false;
+        }
+      });
+
+      if (control == true) {
+        this.upcomingGames.push(game);
+      }
     }
     else if (Date.now() - game.releaseDate.getTime() < 7776000000) { //90 días = 7776000000
-      console.log(Date.now() - game.releaseDate.getTime())
-      this.actualGames.push(game);
+      console.log(Date.now() - game.releaseDate.getTime());
+      let control = true;
+      this.actualGames.forEach((game2) => {
+        if (game2.id == game.id) {
+          control = false;
+        }
+      });
+
+      if (control == true) {
+        this.actualGames.push(game);
+      }
+
       this.actualGames = this.actualGames.sort((a, b) => {
         if (a.releaseDate < b.releaseDate) {
           return 1;
@@ -196,7 +227,16 @@ export class MainPagePage implements OnInit {
       (game) => {
 
         if (game.releaseDate && game.releaseDate.getFullYear() == new Date().getFullYear() && game.releaseDate <= new Date()) {//cambiar el 50
-          this.actualYearGames.push(game);
+          let control = true;
+          this.actualYearGames.forEach((game2) => {
+            if (game2.id == game.id) {
+              control = false;
+            }
+          });
+
+          if (control == true) {
+            this.actualYearGames.push(game);
+          }
         }
       }
     );
@@ -362,19 +402,19 @@ export class MainPagePage implements OnInit {
   }
 
   goToGame(idGame: string) {
-    this.route.navigate(['/game', this.userLoged.id,idGame]);
+    this.route.navigate(['/game', this.userLoged.id, idGame]);
   }
 
   goToDirector(idDirector: string) {
-    this.route.navigate(['/director',this.userLoged.id, idDirector]);
+    this.route.navigate(['/director', this.userLoged.id, idDirector]);
   }
 
   goToPublisher(idPublisher: string) {
-    this.route.navigate(['/publisher',this.userLoged.id, idPublisher]);
+    this.route.navigate(['/publisher', this.userLoged.id, idPublisher]);
   }
 
   goToDeveloper(idDeveloper: string) {
-    this.route.navigate(['/developer',this.userLoged.id, idDeveloper]);
+    this.route.navigate(['/developer', this.userLoged.id, idDeveloper]);
   }
 
   async presentModalUsuario() {
@@ -386,12 +426,12 @@ export class MainPagePage implements OnInit {
     return await modal.present();
   }
 
-  cargarUserLoged(){
+  cargarUserLoged() {
     if (this.activatedRoute.snapshot.paramMap.get('userLoged') == "0") {
       this.userLoged.id = "0";
       this.userLoged.image = "https://firebasestorage.googleapis.com/v0/b/gamescore-f0cc0.appspot.com/o/error%20403.jpg?alt=media&token=90e17733-34c2-4914-8731-e14787939e72";
     } else {
-      this.firebaseService.getUsuario(+this.activatedRoute.snapshot.paramMap.get('userLoged')-1).subscribe(
+      this.firebaseService.getUsuario(+this.activatedRoute.snapshot.paramMap.get('userLoged') - 1).subscribe(
         (user: User) => {
           this.userLoged = user;
         }
@@ -399,7 +439,7 @@ export class MainPagePage implements OnInit {
     }
   }
 
-  goToSuggestions(){
+  goToSuggestions() {
     this.route.navigate(['/suggestions']);
   }
 }

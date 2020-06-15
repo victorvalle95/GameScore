@@ -41,4 +41,8 @@ export class UserComponent implements OnInit {
     },50)
 
   }
+
+  goToSuggestions(){
+    this.route.navigate(['/suggestions']);
+  }
 }

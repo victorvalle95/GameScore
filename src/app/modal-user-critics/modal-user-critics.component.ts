@@ -5,6 +5,7 @@ import { ModalController, AlertController, ToastController } from '@ionic/angula
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { Game } from '../models/game';
+import { UserComponent } from '../user/user.component';
 
 
 @Component({
@@ -29,7 +30,9 @@ export class ModalUserCriticsComponent implements OnInit {
     private firebaseService: FirebaseService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
-    private route: Router) { }
+    private route: Router,
+    public modalController: ModalController,
+    ) { }
 
 
 
@@ -252,6 +255,15 @@ export class ModalUserCriticsComponent implements OnInit {
       buttons: ['Ok']
     });
     await alert.present();
+  }
+
+  async presentModalUsuario() {
+    const modal = await this.modalController.create({
+      component: UserComponent, componentProps: {
+        userLoged: this.userLoged
+      }
+    });
+    return await modal.present();
   }
 
 

@@ -13,14 +13,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
-      url: '/main-page'
-    },
-    {
-      title: 'Suggestions',
-      url: '/suggestions'
-    },
-    {
       title: 'Logout',
       url: '/login'
     }

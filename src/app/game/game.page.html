@@ -1,11 +1,14 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="toolbar">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="volverHome()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title class="titulo">GameScore</ion-title>
     <ion-buttons slot="end">
-      <ion-thumbnail style="margin-right: 10px; margin-top: 3px" *ngIf="userLoged.id!='0'" (click)="presentModalUsuario()">
+      <ion-thumbnail style="margin-right: 10px; margin-top: 3px" *ngIf="userLoged.id!='0'"
+        (click)="presentModalUsuario()">
         <img style="border-radius: 100%; " src="{{userLoged.image}}">
       </ion-thumbnail>
       <ion-thumbnail style="margin-right: 10px; margin-top: 27px" *ngIf="userLoged.id=='0'">
@@ -47,11 +50,13 @@
       <ion-card class="foro" color="dark" (click)="presentModalUserCritic()">Go to user critics</ion-card>
     </div>
     <label>Screenshots</label>
-    <ion-slides class="screenshots" pager="true" [options]="screenshots" #slideWithNav>
-      <ion-slide *ngFor="let s of screenshots">
-        <ion-img src="{{s}}"> </ion-img>
-      </ion-slide>
-    </ion-slides>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let s of screenshots">
+          <ion-img style ="width: 100px !important" src="{{s}}" (click)="openImage(s)"> </ion-img>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <ion-card class="foro" color="tertiary" (click)="openVideo()">Click me for see a trailer</ion-card>
     <ion-card class="datosVarios">
       <ion-grid>

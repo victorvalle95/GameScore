@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="toolbar">
     <ion-title class="titulo">GameScore</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="dismiss()">
@@ -21,7 +21,7 @@
 <ion-content>
   <label class="label">Professional Critics</label>
   <ion-card *ngIf="userLoged.id!='0' && userLoged.id_media!='0'" class="addCritic" color="tertiary"
-    (click)="addCritic()">Añade una crítica profesional</ion-card>
+    (click)="addCritic()">Add a media score</ion-card>
   <ion-list>
     <ion-item name="critics2" *ngFor="let critic of mediaCritics">
       <p>{{ critic.comments }} - {{critic.media}} </p>
