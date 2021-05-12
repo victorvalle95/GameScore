@@ -49,7 +49,7 @@
     "firebase": "^7.14.5",
     "ionic-tooltips": "^4.0.0-beta.0",
     "ng-simple-slideshow": "^1.2.9",
-    "nodemailer": "^2.7.2",
+    "nodemailer": "^6.4.16",
     "rxjs": "6.5.5",
     "rxjs-compat": "6.3.3",
     "tslib": "^1.13.0",
